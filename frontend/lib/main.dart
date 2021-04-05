@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hair_4_you/pages/index.dart';
+import 'package:frontend/pages/index.dart';
 
 void main() {
   runApp(IndexPage());
