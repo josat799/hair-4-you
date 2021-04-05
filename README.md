@@ -6,11 +6,11 @@ The application will handle the following features:
 
 * Login with standard email and password or through Facebook,
 * Link and Unlink facebook
-* bookings, 
-* user-profiles, 
-* notifications, 
-* dynamic frontpage and 
-* dynamic pricing. 
+* Bookings, 
+* User-profiles, 
+* Notifications, 
+* Dynamic frontpage and 
+* Dynamic pricing. 
 
 ## Features
 The features that will be developed.
