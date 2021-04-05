@@ -13,4 +13,4 @@ Dart_Packages.xml
 .idea/
 *.aqueduct.pid
 test/
-,dart_tool/
+.dart_tool/
