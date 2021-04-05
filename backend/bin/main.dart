@@ -1,4 +1,4 @@
-import '../lib/hair_4_you.dart';
+import 'package:hair_4_you/hair_4_you.dart';
 
 Future main() async {
   final app = Application<Hair4YouChannel>()
