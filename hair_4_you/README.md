@@ -1,16 +1,17 @@
-# hair_4_you
+# Hair 4 You - Frontend
 
-A new Flutter project.
+A frontend Flutter web-based applicaton.
 
-## Getting Started
+## Setup
 
-This project is a starting point for a Flutter application.
+1. Install Flutter and make sure all path variables are updated.
+  * Run flutter channel stable
+  * Run flutter upgrade
+2. Run Flutter doctor. Fix any problems that occurs and make sure Flutter is connected to your browser.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Run the application
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Make sure you are in the the same directory as the application. 
+Then run flutter run -d <preffered webbrowser>
+
