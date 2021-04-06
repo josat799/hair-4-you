@@ -6,15 +6,15 @@ enum userType {
 }
 
 class User {
-  String id;
+  final String id;
   String name;
   String phoneNumber;
-  DateTime birthDate;
-  DateTime accountCreated;
+  final DateTime birthDate;
+  final DateTime accountCreated;
   DateTime lastLoggedIn;
   List<String> emails;
   List<userType> userTypes;
-  List<dynamic> bookings = [];
+  List<dynamic> bookings;
 
   User({
     required this.id,
@@ -22,8 +22,9 @@ class User {
     required this.emails,
     required this.birthDate,
     required this.phoneNumber,
-    required this.userTypes,
     required this.accountCreated,
     required this.lastLoggedIn,
+    this.userTypes = const [userType.customer],
+    this.bookings = const [],
   });
 }
