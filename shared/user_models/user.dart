@@ -1,3 +1,5 @@
+import '../booking_models/booking.dart';
+
 enum userType {
   customer,
   hairdresser,
@@ -14,7 +16,7 @@ class User {
   DateTime lastLoggedIn;
   List<String> emails;
   List<userType> userTypes;
-  List<dynamic> bookings;
+  List<Booking> bookings;
 
   User({
     required this.id,
