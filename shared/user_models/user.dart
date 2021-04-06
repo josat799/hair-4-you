@@ -15,14 +15,14 @@ class User {
   List<String> emails;
   List<userType> userTypes;
 
-  User(
-    this.id,
-    this.name,
-    this.emails,
-    this.birthDate,
-    this.phoneNumber,
-    this.userTypes,
-    this.accountCreated,
-    this.lastLoggedIn,
-  );
+  User({
+    required this.id,
+    required this.name,
+    required this.emails,
+    required this.birthDate,
+    required this.phoneNumber,
+    required this.userTypes,
+    required this.accountCreated,
+    required this.lastLoggedIn,
+  });
 }
