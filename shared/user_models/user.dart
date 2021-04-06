@@ -14,6 +14,7 @@ class User {
   DateTime lastLoggedIn;
   List<String> emails;
   List<userType> userTypes;
+  List<dynamic> bookings = [];
 
   User({
     required this.id,
