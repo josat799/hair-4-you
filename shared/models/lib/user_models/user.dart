@@ -1,4 +1,4 @@
-import '../booking_models/booking.dart';
+import 'package:models/booking_models/booking.dart';
 
 enum userType {
   customer,
@@ -19,13 +19,13 @@ class User {
   List<Booking> bookings;
 
   User({
-    required this.id,
-    required this.name,
-    required this.emails,
-    required this.birthDate,
-    required this.phoneNumber,
-    required this.accountCreated,
-    required this.lastLoggedIn,
+    this.id,
+    this.name,
+    this.emails,
+    this.birthDate,
+    this.phoneNumber,
+    this.accountCreated,
+    this.lastLoggedIn,
     this.userTypes = const [userType.customer],
     this.bookings = const [],
   });

@@ -1,4 +1,4 @@
-import '../user_models/user.dart';
+import 'package:models/user_models/user.dart';
 
 class Booking {
   final String id;
@@ -12,15 +12,15 @@ class Booking {
   List<User> customers = [];
   int amountOfCustomers;
 
-  Booking({
-    required this.id,
-    required this.startTime,
-    required this.title,
-    required this.description,
-    required this.createdAt,
-    required this.endTime,
-    required this.lastEdited,
-    required this.amountOfCustomers,
+  Booking(
+    this.id,
+    this.startTime,
+    this.title,
+    this.description,
+    this.createdAt,
+    this.endTime,
+    this.lastEdited,
+    this.amountOfCustomers, {
     List<User> hairDressers = const [],
     List<User> customers = const [],
   }) {
