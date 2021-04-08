@@ -1,4 +1,4 @@
-import 'package:models/booking_models/booking.dart';
+import 'package:models/models.dart';
 
 enum userType {
   customer,

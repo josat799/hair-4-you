@@ -1,4 +1,4 @@
-import 'package:models/user_models/user.dart';
+import 'package:models/models.dart';
 
 class Booking {
   final String id;
