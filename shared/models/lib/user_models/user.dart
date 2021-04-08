@@ -40,4 +40,29 @@ class User {
   void removeBookin(Booking booking) =>
       bookings?.removeWhere((element) => element.id == booking.id);
 
+  User.fromJson(Map<String, dynamic> json)
+      : id = json['id'] ?? '',
+        birthDate = json['birthDate'] ?? '',
+        createdAt = json['accountCreated'],
+        phoneNumber = json['phoneNumber'],
+        name = json['name'],
+        email = json['email'],
+        userTypes = json['userTypes'],
+        lastLoggedIn = json['lastLoggedIn'],
+        bookings = json['bookings'];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'birthDate': birthDate,
+      'accountCreated': createdAt,
+      'phoneNumber': phoneNumber,
+      'email': email,
+      'userTypes': userTypes,
+      'lastLoggedIn': lastLoggedIn,
+      'bookings': bookings,
+    };
+  }
+
 }

@@ -33,7 +33,32 @@ class Booking {
     return <String>{startTime.toString(), startTime.add(duration).toString()};
   }
 
+  Booking.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        createdAt = json['createdAt'],
+        startTime = json['startTime'],
+        title = json['title'],
+        description = json['description'],
         duration = json['duration'],
+        lastEdited = json['lastEditited'],
+        amountOfCustomers = json['amountOfCustomers'],
+        hairDressers = json['hairDressers'],
+        customers = json['customers'];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'createdAt': createdAt,
+      'startTime': startTime,
+      'description': description,
       'duration': duration,
+      'amountOfCustomers': amountOfCustomers,
+      'lastEdited': lastEdited,
+      'hairDressers': hairDressers,
+      'customers': customers,
+    };
+  }
+
   }
 }
