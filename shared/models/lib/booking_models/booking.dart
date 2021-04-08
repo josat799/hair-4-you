@@ -60,5 +60,16 @@ class Booking {
     };
   }
 
+  @override
+  String toString() {
+    return '''
+    Id $id - $title. 
+    Description: $description.
+    Created at ${createdAt.toIso8601String()} and last editied $lastEdited.
+    The booking start at ${startTime.toIso8601String()} and ends 
+    ${startTime.add(duration).toIso8601String()}, the duration is $duration.
+    This booking allows for $amountOfCustomers people, and the hairdressers are 
+    $hairDressers and the customers are $customers.
+    ''';
   }
 }

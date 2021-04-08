@@ -65,4 +65,15 @@ class User {
     };
   }
 
+  @override
+  String toString() {
+    return '''
+    Hi $name your id is $id. 
+    Your birth date is ${birthDate.toString()} 
+    and you created this account ${createdAt.toIso8601String()}
+    Your phonenumber is $phoneNumber and your emails is $email.
+    You're $userTypes and your bookings are $bookings. 
+    Last seen ${lastLoggedIn.toIso8601String()}.
+    ''';
+  }
 }
