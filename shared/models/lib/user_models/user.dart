@@ -1,4 +1,4 @@
-import 'package:models/booking_models/booking.dart';
+import 'package:models/models.dart';
 
 enum userType {
   customer,
@@ -8,11 +8,11 @@ enum userType {
 }
 
 class User {
-  final String id;
+  final int id;
   String name;
   String email;
   String? phoneNumber;
-  final DateTime? birthDate;
+  final DateTime birthDate;
   final DateTime createdAt;
   DateTime lastLoggedIn;
   List<userType> userTypes;
@@ -30,6 +30,7 @@ class User {
     this.userTypes = const [userType.customer],
   }) {
     phoneNumber = 'Missing';
+    bookings = [];
   }
 
   void addBooking(Booking booking) => bookings?.add(booking);
@@ -55,13 +56,13 @@ class User {
     return {
       'id': id,
       'name': name,
-      'birthDate': birthDate,
-      'accountCreated': createdAt,
+      'birthDate': birthDate.toIso8601String(),
+      'accountCreated': createdAt.toIso8601String(),
       'phoneNumber': phoneNumber,
       'email': email,
-      'userTypes': userTypes,
-      'lastLoggedIn': lastLoggedIn,
-      'bookings': bookings,
+      'userTypes': userTypes.map((_userType) => _userType.toString()).toList(),
+      'lastLoggedIn': lastLoggedIn.toIso8601String(),
+      'bookings': bookings?.map((booking) => booking.id).toList(),
     };
   }
 

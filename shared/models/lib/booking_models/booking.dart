@@ -1,11 +1,11 @@
-import 'package:models/user_models/user.dart';
+import 'package:models/models.dart';
 
 class Booking {
-  final String id;
+  final int id;
   final DateTime createdAt;
   String title;
   String? description;
-  DateTime? lastEdited;
+  DateTime lastEdited;
   DateTime startTime;
   Duration duration;
   List<User>? hairDressers = [];
@@ -18,15 +18,14 @@ class Booking {
     required this.title,
     required this.createdAt,
     required this.duration,
-    this.description,
-    this.lastEdited,
-    this.amountOfCustomers,
-    List<User> hairDressers = const [],
-    List<User> customers = const [],
+    required this.lastEdited,
+    this.description = 'Missing',
+    this.amountOfCustomers = 0,
+    List<User>? hairDressers,
+    List<User>? customers,
   }) {
-    description = 'Missing';
-    lastEdited = DateTime.now();
-    amountOfCustomers = 0;
+    hairDressers = [];
+    customers = [];
   }
 
   Set<String> getDuration() {
@@ -49,14 +48,14 @@ class Booking {
     return {
       'id': id,
       'title': title,
-      'createdAt': createdAt,
-      'startTime': startTime,
+      'createdAt': createdAt.toIso8601String(),
+      'startTime': startTime.toIso8601String(),
       'description': description,
-      'duration': duration,
+      'duration': duration.toString(),
       'amountOfCustomers': amountOfCustomers,
-      'lastEdited': lastEdited,
-      'hairDressers': hairDressers,
-      'customers': customers,
+      'lastEdited': lastEdited.toIso8601String(),
+      'hairDressers': hairDressers?.map((user) => user.id).toList(),
+      'customers': customers?.map((user) => user.id).toList(),
     };
   }
 
