@@ -32,4 +32,12 @@ class User {
     phoneNumber = 'Missing';
   }
 
+  void addBooking(Booking booking) => bookings?.add(booking);
+
+  void addMultipleBookings(List<Booking> bookings) =>
+      this.bookings?.addAll(bookings);
+
+  void removeBookin(Booking booking) =>
+      bookings?.removeWhere((element) => element.id == booking.id);
+
 }
