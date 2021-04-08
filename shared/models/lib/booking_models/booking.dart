@@ -5,7 +5,7 @@ class Booking {
   final DateTime createdAt;
   String title;
   String? description;
-  DateTime? lastEdited;
+  DateTime lastEdited;
   DateTime startTime;
   Duration duration;
   List<User>? hairDressers = [];
@@ -18,15 +18,14 @@ class Booking {
     required this.title,
     required this.createdAt,
     required this.duration,
-    this.description,
-    this.lastEdited,
-    this.amountOfCustomers,
-    List<User> hairDressers = const [],
-    List<User> customers = const [],
+    required this.lastEdited,
+    this.description = 'Missing',
+    this.amountOfCustomers = 0,
+    List<User>? hairDressers,
+    List<User>? customers,
   }) {
-    description = 'Missing';
-    lastEdited = DateTime.now();
-    amountOfCustomers = 0;
+    hairDressers = [];
+    customers = [];
   }
 
   Set<String> getDuration() {

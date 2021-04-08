@@ -12,7 +12,7 @@ class User {
   String name;
   String email;
   String? phoneNumber;
-  final DateTime? birthDate;
+  final DateTime birthDate;
   final DateTime createdAt;
   DateTime lastLoggedIn;
   List<userType> userTypes;
@@ -30,6 +30,7 @@ class User {
     this.userTypes = const [userType.customer],
   }) {
     phoneNumber = 'Missing';
+    bookings = [];
   }
 
   void addBooking(Booking booking) => bookings?.add(booking);
