@@ -10,23 +10,26 @@ enum userType {
 class User {
   final String id;
   String name;
-  String phoneNumber;
-  final DateTime birthDate;
-  final DateTime accountCreated;
+  String email;
+  String? phoneNumber;
+  final DateTime? birthDate;
+  final DateTime createdAt;
   DateTime lastLoggedIn;
-  List<String> emails;
   List<userType> userTypes;
-  List<Booking> bookings;
+  List<Booking>? bookings;
 
   User({
-    this.id,
-    this.name,
-    this.emails,
-    this.birthDate,
+    required this.id,
+    required this.createdAt,
+    required this.birthDate,
+    required this.email,
+    required this.name,
+    required this.lastLoggedIn,
     this.phoneNumber,
-    this.accountCreated,
-    this.lastLoggedIn,
-    this.userTypes = const [userType.customer],
     this.bookings = const [],
-  });
+    this.userTypes = const [userType.customer],
+  }) {
+    phoneNumber = 'Missing';
+  }
+
 }
