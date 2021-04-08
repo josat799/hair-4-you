@@ -200,7 +200,7 @@ packages:
   models:
     dependency: "direct main"
     description:
-      path: "/Users/rogge/developer/courses/tddd27/shared/models"
+      path: "/Users/rogge/developer/courses/tddd27/shared/models/"
       relative: false
     source: path
     version: "0.0.0"

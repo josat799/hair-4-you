@@ -10,7 +10,7 @@ environment:
 dependencies:
   aqueduct: 3.3.0+1
   models:
-    path: "/Users/rogge/developer/courses/tddd27/shared/models"
+    path: '/Users/rogge/developer/courses/tddd27/shared/models/'
 
 dev_dependencies:
   test: ^1.0.0

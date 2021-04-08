@@ -5,6 +5,24 @@ import 'hair_4_you.dart';
 /// Override methods in this class to set up routes and initialize services like
 /// database connections. See http://aqueduct.io/docs/http/channel/.
 class Hair4YouChannel extends ApplicationChannel {
+  User user = User(
+    id: 1,
+    createdAt: DateTime.now(),
+    birthDate: DateTime(1997, 5, 30),
+    email: 'josef.atoui@live.se',
+    lastLoggedIn: DateTime.now(),
+    name: 'Josef Atoui',
+  );
+
+  Booking booking = Booking(
+    id: 1,
+    startTime: DateTime(2021, 5, 20, 12, 30),
+    title: 'Vanlig klippning',
+    createdAt: DateTime.now(),
+    duration: Duration(hours: 1),
+    lastEdited: DateTime.now(),
+  );
+
   /// Initialize services in this method.
   ///
   /// Implement this method to initialize services, read values from [options]
@@ -26,11 +44,17 @@ class Hair4YouChannel extends ApplicationChannel {
   @override
   Controller get entryPoint {
     final router = Router();
-
     // Prefer to use `link` instead of `linkFunction`.
     // See: https://aqueduct.io/docs/http/request_controller/
     router.route("/example").linkFunction((request) async {
-      return Response.ok({"key": "value"});
+      booking.customers?.add(user);
+      user.bookings?.add(booking);
+      return Response.ok(
+        {
+          'bookings': [booking],
+          'users': [user]
+        },
+      )..contentType = ContentType.json;
     });
 
     return router;
