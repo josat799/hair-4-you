@@ -56,13 +56,13 @@ class User {
     return {
       'id': id,
       'name': name,
-      'birthDate': birthDate,
-      'accountCreated': createdAt,
+      'birthDate': birthDate.toIso8601String(),
+      'accountCreated': createdAt.toIso8601String(),
       'phoneNumber': phoneNumber,
       'email': email,
-      'userTypes': userTypes,
-      'lastLoggedIn': lastLoggedIn,
-      'bookings': bookings,
+      'userTypes': userTypes.map((_userType) => _userType.toString()).toList(),
+      'lastLoggedIn': lastLoggedIn.toIso8601String(),
+      'bookings': bookings?.map((booking) => booking.id).toList(),
     };
   }
 

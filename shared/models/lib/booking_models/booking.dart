@@ -48,14 +48,14 @@ class Booking {
     return {
       'id': id,
       'title': title,
-      'createdAt': createdAt,
-      'startTime': startTime,
+      'createdAt': createdAt.toIso8601String(),
+      'startTime': startTime.toIso8601String(),
       'description': description,
-      'duration': duration,
+      'duration': duration.toString(),
       'amountOfCustomers': amountOfCustomers,
-      'lastEdited': lastEdited,
-      'hairDressers': hairDressers,
-      'customers': customers,
+      'lastEdited': lastEdited.toIso8601String(),
+      'hairDressers': hairDressers?.map((user) => user.id).toList(),
+      'customers': customers?.map((user) => user.id).toList(),
     };
   }
 
