@@ -7,15 +7,9 @@ class Booking {
   String description;
   DateTime lastEdited;
   DateTime startTime;
-  String endTime;
-  List<User> hairDressers = [];
-  List<User> customers = [];
-  int amountOfCustomers;
+  Duration duration;
 
-  Booking(
-    this.id,
-    this.startTime,
-    this.title,
+    required this.duration,
     this.description,
     this.createdAt,
     this.endTime,
@@ -24,7 +18,10 @@ class Booking {
     List<User> hairDressers = const [],
     List<User> customers = const [],
   }) {
-    hairDressers.isEmpty ? null : this.hairDressers = hairDressers;
-    customers.isEmpty ? null : this.customers = customers;
+  Set<String> getDuration() {
+    return <String>{startTime.toString(), startTime.add(duration).toString()};
+  }
+        duration = json['duration'],
+      'duration': duration,
   }
 }
