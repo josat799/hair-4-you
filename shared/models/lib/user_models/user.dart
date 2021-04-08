@@ -8,7 +8,7 @@ enum userType {
 }
 
 class User {
-  final String id;
+  final int id;
   String name;
   String email;
   String? phoneNumber;

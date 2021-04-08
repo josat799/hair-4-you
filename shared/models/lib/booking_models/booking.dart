@@ -1,7 +1,7 @@
 import 'package:models/models.dart';
 
 class Booking {
-  final String id;
+  final int id;
   final DateTime createdAt;
   String title;
   String? description;
