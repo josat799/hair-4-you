@@ -4,27 +4,72 @@ class Booking {
   final String id;
   final DateTime createdAt;
   String title;
-  String description;
-  DateTime lastEdited;
+  String? description;
+  DateTime? lastEdited;
   DateTime startTime;
-  String endTime;
-  List<User> hairDressers = [];
-  List<User> customers = [];
-  int amountOfCustomers;
+  Duration duration;
+  List<User>? hairDressers = [];
+  List<User>? customers = [];
+  int? amountOfCustomers;
 
-  Booking(
-    this.id,
-    this.startTime,
-    this.title,
+  Booking({
+    required this.id,
+    required this.startTime,
+    required this.title,
+    required this.createdAt,
+    required this.duration,
     this.description,
-    this.createdAt,
-    this.endTime,
     this.lastEdited,
-    this.amountOfCustomers, {
+    this.amountOfCustomers,
     List<User> hairDressers = const [],
     List<User> customers = const [],
   }) {
-    hairDressers.isEmpty ? null : this.hairDressers = hairDressers;
-    customers.isEmpty ? null : this.customers = customers;
+    description = 'Missing';
+    lastEdited = DateTime.now();
+    amountOfCustomers = 0;
+  }
+
+  Set<String> getDuration() {
+    return <String>{startTime.toString(), startTime.add(duration).toString()};
+  }
+
+  Booking.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        createdAt = json['createdAt'],
+        startTime = json['startTime'],
+        title = json['title'],
+        description = json['description'],
+        duration = json['duration'],
+        lastEdited = json['lastEditited'],
+        amountOfCustomers = json['amountOfCustomers'],
+        hairDressers = json['hairDressers'],
+        customers = json['customers'];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'createdAt': createdAt,
+      'startTime': startTime,
+      'description': description,
+      'duration': duration,
+      'amountOfCustomers': amountOfCustomers,
+      'lastEdited': lastEdited,
+      'hairDressers': hairDressers,
+      'customers': customers,
+    };
+  }
+
+  @override
+  String toString() {
+    return '''
+    Id $id - $title. 
+    Description: $description.
+    Created at ${createdAt.toIso8601String()} and last editied $lastEdited.
+    The booking start at ${startTime.toIso8601String()} and ends 
+    ${startTime.add(duration).toIso8601String()}, the duration is $duration.
+    This booking allows for $amountOfCustomers people, and the hairdressers are 
+    $hairDressers and the customers are $customers.
+    ''';
   }
 }
