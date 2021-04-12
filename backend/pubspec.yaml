@@ -12,6 +12,9 @@ dependencies:
   models:
     path: '/Users/rogge/developer/courses/tddd27/shared/models/'
 
+dependency_overrides:
+    postgres: ^2.1.1
+
 dev_dependencies:
   test: ^1.0.0
   aqueduct_test: ^1.0.0
