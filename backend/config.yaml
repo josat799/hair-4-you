@@ -1,0 +1,6 @@
+database:
+  username: aqueduct
+  password: 'aqueduct'
+  host: localhost
+  port: 5432
+  databaseName: hair_for_you
