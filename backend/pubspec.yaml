@@ -1,13 +1,21 @@
-name: hair_4_you
+name: backend
+publish_to: none
 description: An empty Aqueduct application.
 version: 0.0.1
 author: stable|kernel <jobs@stablekernel.com>
 
+
 environment:
-  sdk: ">=2.0.0 <3.0.0"
+  sdk: 2.10.4
 
 dependencies:
-  aqueduct: 3.3.0+1
+  aqueduct: ^3.0.0+1
+  models:
+    path: /Users/rogge/developer/courses/tddd27/shared/models
+
+
+dependency_overrides:
+postgres: 2.1.1
 
 dev_dependencies:
   test: ^1.0.0

@@ -1,4 +1,4 @@
-import 'package:backend/hair_4_you.dart';
+import 'package:backend/backend.dart';
 
 Future main() async {
   final app = Application<Hair4YouChannel>()
@@ -8,6 +8,7 @@ Future main() async {
   final count = Platform.numberOfProcessors ~/ 2;
   await app.start(numberOfInstances: count > 0 ? count : 1);
 
-  print("Application started on port: ${app.options.port}.");
+  print(
+      "Application started on ip: ${app.options.address} port: ${app.options.port}.");
   print("Use Ctrl-C (SIGINT) to stop running the application.");
 }
