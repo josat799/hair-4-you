@@ -7,18 +7,38 @@ enum userType {
   owner,
 }
 
-class User {
-  final int id;
-  String name;
-  String email;
-  String phoneNumber;
-  final DateTime birthDate;
-  final DateTime createdAt;
-  DateTime lastLoggedIn;
-  List<userType> userTypes;
-  List<Booking>? bookings;
+class ManagedUser extends ManagedObject<User> implements User {}
 
+@Table(name: 'Users')
+class User {
+  @primaryKey
+  final int id;
+
+  @Column(nullable: false)
+  String name;
+
+  @Column(nullable: false, unique: true)
+  String email;
+
+  @Column(nullable: true)
+  String phoneNumber;
+
+  @Column(nullable: true)
+  final DateTime birthDate;
+
+  @Column(nullable: false)
+  final DateTime createdAt;
+
+  @Column(nullable: true)
+  DateTime lastLoggedIn;
+
+  ManagedSet<ManagedBookingCustomer> bookingCustomer;
+
+  ManagedSet<ManagedBookingHairdresser> bookingHairdresser;
 // List<Booking> bookings;
+  @Column(nullable: true)
+  Document userTypes;
+
   User({
     this.id,
     this.createdAt,
@@ -39,7 +59,7 @@ class User {
         email = json['email'],
         userTypes = json['userTypes'],
         lastLoggedIn = json['lastLoggedIn'],
-        bookings = json['bookings'];
+        bookingCustomer = json['bookings'];
 
   Map<String, dynamic> toJson() {
     return {
@@ -49,7 +69,6 @@ class User {
       'accountCreated': createdAt.toIso8601String(),
       'phoneNumber': phoneNumber,
       'email': email,
-      'userTypes': userTypes.map((_userType) => _userType.toString()).toList(),
       'lastLoggedIn': lastLoggedIn.toIso8601String(),
       'bookings': bookingCustomer.map((booking) => booking.id).toList(),
     };

@@ -1,17 +1,43 @@
 import 'package:models/models.dart';
 
+class ManagedBooking extends ManagedObject<Booking> implements Booking {}
+
+@Table(name: 'Bookings')
 class Booking {
+  @primaryKey
   final int id;
+
+  @Column(nullable: false)
   final DateTime createdAt;
+
+  @Column(nullable: false)
   String title;
+
+  @Column(nullable: true)
   String description;
+
+  @Column(nullable: true)
   DateTime lastEdited;
+
+  @Column(nullable: false)
   DateTime startTime;
+
+  @Column(nullable: false, databaseType: ManagedPropertyType.integer)
   Duration duration;
+
+  // @Column(nullable: true)
   // List<User> hairDressers = [];
 
+  ManagedSet<ManagedBookingCustomer> bookingCustomer;
+
+  ManagedSet<ManagedBookingHairdresser> bookingHairdresser;
+
+  //@Column(nullable: true)
   //List<User> customers = [];
+
+  @Column(nullable: true)
   int amountOfCustomers;
+
   Booking({
     this.id,
     this.startTime,
@@ -41,8 +67,8 @@ class Booking {
         duration = json['duration'],
         lastEdited = json['lastEditited'],
         amountOfCustomers = json['amountOfCustomers'],
-        hairDressers = json['hairDressers'],
-        customers = json['customers'];
+        //hairDressers = json['hairDressers'],
+        bookingCustomer = json['customers'];
 
   Map<String, dynamic> toJson() {
     return {
