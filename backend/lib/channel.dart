@@ -46,6 +46,9 @@ class Hair4YouChannel extends ApplicationChannel {
     });
 
     router.route("/users/[:id]").link(() => UserController(context));
+
+    router.route("/bookings/[:id]").link(() => BookingController(context));
+
     return router;
   }
 }
