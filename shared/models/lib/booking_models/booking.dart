@@ -4,25 +4,25 @@ class Booking {
   final int id;
   final DateTime createdAt;
   String title;
-  String? description;
+  String description;
   DateTime lastEdited;
   DateTime startTime;
   Duration duration;
-  List<User>? hairDressers = [];
-  List<User>? customers = [];
-  int? amountOfCustomers;
+  // List<User> hairDressers = [];
 
+  //List<User> customers = [];
+  int amountOfCustomers;
   Booking({
-    required this.id,
-    required this.startTime,
-    required this.title,
-    required this.createdAt,
-    required this.duration,
-    required this.lastEdited,
+    this.id,
+    this.startTime,
+    this.title,
+    this.createdAt,
+    this.duration,
+    this.lastEdited,
     this.description = 'Missing',
     this.amountOfCustomers = 0,
-    List<User>? hairDressers,
-    List<User>? customers,
+    List<User> hairDressers,
+    List<User> customers,
   }) {
     hairDressers = [];
     customers = [];
@@ -54,8 +54,8 @@ class Booking {
       'duration': duration.toString(),
       'amountOfCustomers': amountOfCustomers,
       'lastEdited': lastEdited.toIso8601String(),
-      'hairDressers': hairDressers?.map((user) => user.id).toList(),
-      'customers': customers?.map((user) => user.id).toList(),
+      //'hairDressers': hairDressers.map((user) => user.id).toList(),
+      'customers': bookingCustomer.map((user) => user.id).toList(),
     };
   }
 
@@ -68,7 +68,7 @@ class Booking {
     The booking start at ${startTime.toIso8601String()} and ends 
     ${startTime.add(duration).toIso8601String()}, the duration is $duration.
     This booking allows for $amountOfCustomers people, and the hairdressers are 
-    $hairDressers and the customers are $customers.
+    and the customers are $bookingCustomer.
     ''';
   }
 }
