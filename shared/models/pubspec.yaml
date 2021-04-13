@@ -4,10 +4,13 @@ description: A simple command-line application.
 # homepage: https://www.example.com
 
 environment:
-  sdk: '>=2.12.2 <3.0.0'
+  sdk: ^2.10.4
 
-#dependencies:
-#  path: ^1.7.0
+dependencies:
+  aqueduct: ^3.3.0
+
+dependency_overrides:
+postgres: 2.1.1
 
 dev_dependencies:
   pedantic: ^1.9.0

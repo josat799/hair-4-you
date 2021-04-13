@@ -1,28 +1,54 @@
 import 'package:models/models.dart';
 
+class ManagedBooking extends ManagedObject<Booking> implements Booking {}
+
+@Table(name: 'Bookings')
 class Booking {
+  @primaryKey
   final int id;
+
+  @Column(nullable: false)
   final DateTime createdAt;
+
+  @Column(nullable: false)
   String title;
-  String? description;
+
+  @Column(nullable: true)
+  String description;
+
+  @Column(nullable: true)
   DateTime lastEdited;
+
+  @Column(nullable: false)
   DateTime startTime;
+
+  @Column(nullable: false, databaseType: ManagedPropertyType.integer)
   Duration duration;
-  List<User>? hairDressers = [];
-  List<User>? customers = [];
-  int? amountOfCustomers;
+
+  // @Column(nullable: true)
+  // List<User> hairDressers = [];
+
+  ManagedSet<ManagedBookingCustomer> bookingCustomer;
+
+  ManagedSet<ManagedBookingHairdresser> bookingHairdresser;
+
+  //@Column(nullable: true)
+  //List<User> customers = [];
+
+  @Column(nullable: true)
+  int amountOfCustomers;
 
   Booking({
-    required this.id,
-    required this.startTime,
-    required this.title,
-    required this.createdAt,
-    required this.duration,
-    required this.lastEdited,
+    this.id,
+    this.startTime,
+    this.title,
+    this.createdAt,
+    this.duration,
+    this.lastEdited,
     this.description = 'Missing',
     this.amountOfCustomers = 0,
-    List<User>? hairDressers,
-    List<User>? customers,
+    List<User> hairDressers,
+    List<User> customers,
   }) {
     hairDressers = [];
     customers = [];
@@ -41,8 +67,8 @@ class Booking {
         duration = json['duration'],
         lastEdited = json['lastEditited'],
         amountOfCustomers = json['amountOfCustomers'],
-        hairDressers = json['hairDressers'],
-        customers = json['customers'];
+        //hairDressers = json['hairDressers'],
+        bookingCustomer = json['customers'];
 
   Map<String, dynamic> toJson() {
     return {
@@ -54,8 +80,8 @@ class Booking {
       'duration': duration.toString(),
       'amountOfCustomers': amountOfCustomers,
       'lastEdited': lastEdited.toIso8601String(),
-      'hairDressers': hairDressers?.map((user) => user.id).toList(),
-      'customers': customers?.map((user) => user.id).toList(),
+      //'hairDressers': hairDressers.map((user) => user.id).toList(),
+      'customers': bookingCustomer.map((user) => user.id).toList(),
     };
   }
 
@@ -68,7 +94,7 @@ class Booking {
     The booking start at ${startTime.toIso8601String()} and ends 
     ${startTime.add(duration).toIso8601String()}, the duration is $duration.
     This booking allows for $amountOfCustomers people, and the hairdressers are 
-    $hairDressers and the customers are $customers.
+    and the customers are $bookingCustomer.
     ''';
   }
 }
