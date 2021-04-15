@@ -37,7 +37,7 @@ class User {
   ManagedSet<ManagedBookingHairdresser> bookingHairdresser;
 // List<Booking> bookings;
   @Column(nullable: true)
-  Document userTypes;
+  userType role;
 
   User({
     this.id,
@@ -47,7 +47,7 @@ class User {
     this.name,
     this.lastLoggedIn,
     this.phoneNumber,
-    this.userTypes,
+    this.role,
   });
 
   User.fromJson(Map<String, dynamic> json)
@@ -57,7 +57,7 @@ class User {
         phoneNumber = json['phoneNumber'],
         name = json['name'],
         email = json['email'],
-        userTypes = json['userTypes'],
+        role = json['role'],
         lastLoggedIn = json['lastLoggedIn'],
         bookingCustomer = json['bookings'];
 
@@ -81,7 +81,7 @@ class User {
     Your birth date is ${birthDate.toString()} 
     and you created this account ${createdAt.toIso8601String()}
     Your phonenumber is $phoneNumber and your emails is $email.
-    You're $userTypes and your bookings are $bookingCustomer. 
+    You're $role and your bookings are $bookingCustomer. 
     Last seen ${lastLoggedIn.toIso8601String()}.
     ''';
   }
