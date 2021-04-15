@@ -1,3 +1,4 @@
+import 'package:aqueduct/managed_auth.dart';
 import 'package:models/models.dart';
 
 enum userType {
@@ -7,13 +8,14 @@ enum userType {
   owner,
 }
 
-class ManagedUser extends ManagedObject<User> implements User {}
+class ManagedUser extends ManagedObject<User>
+    implements User, ManagedAuthResourceOwner<User> {
+  @Serialize(input: true, output: false)
+  String password;
+}
 
 @Table(name: 'Users')
-class User {
-  @primaryKey
-  final int id;
-
+class User extends ResourceOwnerTableDefinition {
   @Column(nullable: false)
   String name;
 
@@ -27,7 +29,7 @@ class User {
   final DateTime birthDate;
 
   @Column(nullable: false)
-  final DateTime createdAt;
+  DateTime createdAt;
 
   @Column(nullable: true)
   DateTime lastLoggedIn;
@@ -37,33 +39,30 @@ class User {
   ManagedSet<ManagedBookingHairdresser> bookingHairdresser;
 // List<Booking> bookings;
   @Column(nullable: true)
-  Document userTypes;
+  userType role;
 
   User({
-    this.id,
     this.createdAt,
     this.birthDate,
     this.email,
     this.name,
     this.lastLoggedIn,
     this.phoneNumber,
-    this.userTypes,
+    this.role,
   });
 
   User.fromJson(Map<String, dynamic> json)
-      : id = json['id'] ?? '',
-        birthDate = json['birthDate'] ?? '',
+      : birthDate = json['birthDate'] ?? '',
         createdAt = json['accountCreated'],
         phoneNumber = json['phoneNumber'],
         name = json['name'],
         email = json['email'],
-        userTypes = json['userTypes'],
+        role = json['role'],
         lastLoggedIn = json['lastLoggedIn'],
         bookingCustomer = json['bookings'];
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'name': name,
       'birthDate': birthDate.toIso8601String(),
       'accountCreated': createdAt.toIso8601String(),
@@ -77,11 +76,11 @@ class User {
   @override
   String toString() {
     return '''
-    Hi $name your id is $id. 
+    Hi $name your id is. 
     Your birth date is ${birthDate.toString()} 
     and you created this account ${createdAt.toIso8601String()}
     Your phonenumber is $phoneNumber and your emails is $email.
-    You're $userTypes and your bookings are $bookingCustomer. 
+    You're $role and your bookings are $bookingCustomer. 
     Last seen ${lastLoggedIn.toIso8601String()}.
     ''';
   }
