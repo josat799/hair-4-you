@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/helpers/OAuth.dart';
+import 'package:frontend/services/OAuth.dart';
 import 'package:frontend/providers/user_auth.dart';
 import 'package:provider/provider.dart';
 
