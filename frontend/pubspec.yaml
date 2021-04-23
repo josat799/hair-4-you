@@ -23,7 +23,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: ^0.13.1
+  provider: ^5.0.0
 
+
+override_dependencies:
   models:
     path: /Users/rogge/developer/courses/tddd27/shared/models
 
