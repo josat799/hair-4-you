@@ -16,6 +16,8 @@ class Hair4YouChannel extends ApplicationChannel {
   /// This method is invoked prior to [entryPoint] being accessed.
   @override
   Future prepare() async {
+    CORSPolicy.defaultPolicy.allowedOrigins = ["*"];
+
     final config = MyConfiguration(options.configurationFilePath);
 
     final dataModel = ManagedDataModel.fromCurrentMirrorSystem();
