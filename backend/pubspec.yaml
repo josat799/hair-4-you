@@ -6,7 +6,7 @@ author: stable|kernel <jobs@stablekernel.com>
 
 
 environment:
-  sdk: 2.10.4
+  sdk: 2.7.2
 
 dependencies:
   aqueduct: ^3.0.0+1

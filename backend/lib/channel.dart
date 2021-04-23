@@ -6,6 +6,7 @@ import 'backend.dart';
 /// database connections. See http://aqueduct.io/docs/http/channel/.
 class Hair4YouChannel extends ApplicationChannel {
   ManagedContext context;
+  AuthServer authServer;
 
   /// Initialize services in this method.
   ///
@@ -26,6 +27,9 @@ class Hair4YouChannel extends ApplicationChannel {
         config.database.databaseName);
 
     context = ManagedContext(dataModel, psc);
+
+    final delegate = ManagedAuthDelegate<ManagedUser>(context);
+    authServer = AuthServer(delegate);
     logger.onRecord.listen(
         (rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
   }
@@ -39,13 +43,24 @@ class Hair4YouChannel extends ApplicationChannel {
   @override
   Controller get entryPoint {
     final router = Router();
-    // Prefer to use `link` instead of `linkFunction`.
-    // See: https://aqueduct.io/docs/http/request_controller/
-    router.route("/example").linkFunction((request) async {
+
+    router
+        .route("/register")
+        .link(() => RegisterController(context, authServer));
+
+    router.route("/login").link(() => AuthController(authServer));
+
+    router
+        .route("/example")
+        .link(() => Authorizer.basic(authServer))
+        .linkFunction((request) async {
       return Response.ok({});
     });
 
-    router.route("/users/[:id]").link(() => UserController(context));
+    router
+        .route("/users/[:id]")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => UserController(context));
 
     router.route("/bookings/[:id]").link(() => BookingController(context));
 
