@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/providers/user_auth.dart';
+import 'package:frontend/screens/bookings_screen.dart';
 import 'package:frontend/screens/user_profile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/widgets/login_widget.dart';
@@ -27,18 +28,36 @@ class _IndexScreenState extends State<IndexScreen> {
         ],
       ),
       body: Center(
-        child: ElevatedButton(
-          child: Text('See your profile'),
-          onPressed: () {
-            if (context.read<UserAuth>().userState != UserState.loggedIn) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text('You are not logged in'),
-              ));
-              return;
-            }
-            var id = context.read<UserAuth>().id;
-            Navigator.pushNamed(context, '${UserProfileScreen.ROUTENAME}/$id');
-          },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            ElevatedButton(
+              child: Text('See your profile'),
+              onPressed: () {
+                if (context.read<UserAuth>().userState != UserState.loggedIn) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('You are not logged in'),
+                  ));
+                  return;
+                }
+                var id = context.read<UserAuth>().id;
+                Navigator.pushNamed(
+                    context, '${UserProfileScreen.ROUTENAME}/$id');
+              },
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  if (context.read<UserAuth>().userState !=
+                      UserState.loggedIn) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('You are not logged in'),
+                    ));
+                    return;
+                  }
+                  Navigator.pushNamed(context, '${BookingsScreen.ROUTENAME}');
+                },
+                child: Text('See all bookings'))
+          ],
         ),
       ),
     );
