@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/services/OAuth.dart';
 import 'package:frontend/providers/user_auth.dart';
+import 'package:frontend/services/user_service.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
@@ -75,7 +76,6 @@ class _LoginState extends State<Login> {
                               loginInformation['username'],
                               loginInformation['password'],
                             ).requestToken();
-                            print(response);
                             if (response['statusCode'] == 200) {
                               context.read<UserAuth>().token =
                                   response['message']['access_token'];
@@ -83,12 +83,40 @@ class _LoginState extends State<Login> {
                                   response['message']['expires_in'].toString();
                               context.read<UserAuth>().userState =
                                   UserState.loggedIn;
+
+                              final response1 = await UserService(context)
+                                  .fetchUser(
+                                      email: loginInformation['username']);
+                              context.read<UserAuth>().id = response1['id'];
+
                               Navigator.pop(context);
                             }
                           }
                         },
                         child: Text('Login'),
                       ),
+                      ElevatedButton(
+                          onPressed: () async {
+                            final response = await OAuth(
+                              context,
+                              'josef.atoui97@gmail.com',
+                              '1234',
+                            ).requestToken();
+                            if (response['statusCode'] == 200) {
+                              context.read<UserAuth>().token =
+                                  response['message']['access_token'];
+                              context.read<UserAuth>().tokenExpiryDate =
+                                  response['message']['expires_in'].toString();
+                              context.read<UserAuth>().userState =
+                                  UserState.loggedIn;
+
+                              final response1 = await UserService(context)
+                                  .fetchUser(email: 'josef.atoui97@gmail.com');
+                              context.read<UserAuth>().id = response1['id'];
+                              context.read<UserAuth>().user = response1;
+                            }
+                          },
+                          child: Text('SuperLogin')),
                     ],
                   ),
                 );

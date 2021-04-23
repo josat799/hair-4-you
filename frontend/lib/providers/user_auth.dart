@@ -11,13 +11,31 @@ enum UserState {
 class UserAuth with ChangeNotifier {
   UserAuth(this._clientID);
 
-  UserState _userState;
+  Map<String, dynamic> _user;
+
+  int _id;
+
+  UserState _userState = UserState.LoggedOut;
 
   String _clientID = '';
 
   String _tokenExpiryDate = '';
 
   String _token = '';
+
+  get user => this._user;
+
+  set user(Map<String, dynamic> value) {
+    this._user = value;
+    notifyListeners();
+  }
+
+  get id => this._id;
+
+  set id(int value) {
+    this._id = value;
+    notifyListeners();
+  }
 
   get clientID => this._clientID;
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/providers/user_auth.dart';
 import 'package:frontend/screens/user_profile_screen.dart';
-
+import 'package:provider/provider.dart';
 import 'package:frontend/widgets/login_widget.dart';
 
 class IndexScreen extends StatefulWidget {
@@ -29,7 +30,13 @@ class _IndexScreenState extends State<IndexScreen> {
         child: ElevatedButton(
           child: Text('See your profile'),
           onPressed: () {
-            var id = 9;
+            if (context.read<UserAuth>().userState != UserState.loggedIn) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text('You are not logged in'),
+              ));
+              return;
+            }
+            var id = context.read<UserAuth>().id;
             Navigator.pushNamed(context, '${UserProfileScreen.ROUTENAME}/$id');
           },
         ),
