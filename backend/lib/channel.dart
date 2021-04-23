@@ -64,7 +64,10 @@ class Hair4YouChannel extends ApplicationChannel {
         .link(() => Authorizer.bearer(authServer))
         .link(() => UserController(context));
 
-    router.route("/bookings/[:id]").link(() => BookingController(context));
+    router
+        .route("/bookings/[:id]")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => BookingController(context));
 
     return router;
   }
