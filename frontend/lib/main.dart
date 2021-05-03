@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/providers/user_auth.dart';
+import 'package:frontend/screens/bookings_screen.dart';
 import 'package:frontend/screens/index_screen.dart';
 import 'package:frontend/screens/unknow_screen.dart';
 import 'package:frontend/screens/user_profile_screen.dart';
@@ -29,6 +30,11 @@ Route<dynamic> _routes(RouteSettings settings) {
   } else if (settings.name.startsWith(UserProfileScreen.ROUTENAME)) {
     return MaterialPageRoute(
       builder: (context) => UserProfileScreen(int.parse(id)),
+      settings: settings,
+    );
+  } else if (settings.name == BookingsScreen.ROUTENAME) {
+    return MaterialPageRoute(
+      builder: (context) => BookingsScreen(),
       settings: settings,
     );
   } else {
