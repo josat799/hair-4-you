@@ -10,12 +10,11 @@ class BookingService {
 
   BookingService(this.context);
 
-  Future<List<Map<String, dynamic>>> fetchBookings() async {
+  Future<List<dynamic>> fetchBookings() async {
     String token = context.read<UserAuth>().token;
     var response = await http.get(Uri.http("localhost:8888", '/bookings'),
         headers: {'Authorization': 'Bearer $token'});
 
-    print(jsonDecode(response.body));
     return jsonDecode(response.body);
   }
 }
