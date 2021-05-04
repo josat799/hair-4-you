@@ -1,4 +1,4 @@
-import 'package:aqueduct/managed_auth.dart';
+
 import 'package:models/models.dart';
 
 enum userType {
