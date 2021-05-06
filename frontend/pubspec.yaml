@@ -25,6 +25,8 @@ dependencies:
     sdk: flutter
   http: ^0.13.1
   provider: ^5.0.0
+  shared_preferences: ^2.0.5
+
 
 
 override_dependencies:
