@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/user.dart';
 
 class Profile extends StatelessWidget {
-  final Map<String, dynamic> data;
+  final User user;
 
-  Profile(this.data);
+  Profile(this.user);
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +13,10 @@ class Profile extends StatelessWidget {
       child: Card(
         child: Column(
           children: [
-            Text('Hello ${data['name']}'),
-            Text('Your phonenumber is: ${data['phoneNumber']}'),
-            Text('Your email is: ${data['email']}'),
-            Text('Your birthdate is: ${data['birthDate']}'),
+            Text('Hello ${user.name}'),
+            Text('Your phonenumber is: ${user.phoneNumber}'),
+            Text('Your email is: ${user.email}'),
+            Text('Your birthdate is: ${user.birthDate}'),
           ],
         ),
       ),

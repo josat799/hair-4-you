@@ -17,7 +17,7 @@ class UserService {
     String path;
     Map<String, String> params = {};
 
-    if (id == null && email.isNotEmpty) {
+    if (id == null && email!.isNotEmpty) {
       path = "/users";
       params['email'] = email;
     } else {
