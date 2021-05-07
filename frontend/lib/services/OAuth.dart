@@ -10,11 +10,26 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class OAuth {
   final BuildContext context;
-  final String username, password;
 
-  OAuth(this.context, this.username, this.password);
+  OAuth(this.context);
 
-  Future<Map<String, dynamic>> _requestToken() async {
+  Future<void> logout() async {
+    context.read<UserAuth>().userState = UserState.loggingOut;
+    final prefs = await SharedPreferences.getInstance();
+    context.read<UserAuth>().id = null;
+    context.read<UserAuth>().token = null;
+    context.read<UserAuth>().tokenExpiryDate = null;
+    context.read<UserAuth>().user = null;
+
+    prefs.clear();
+
+    if (prefs.getKeys().isEmpty) {
+      context.read<UserAuth>().userState = UserState.LoggedOut;
+    }
+  }
+
+  Future<Map<String, dynamic>> _requestToken(
+      String username, String password) async {
     final String clientID = "${context.read<UserAuth>().clientID}";
     String body = "username=$username&password=$password&grant_type=password";
 
@@ -36,17 +51,21 @@ class OAuth {
     };
   }
 
-  Future<void> login() async {
-    final Map<String, dynamic> response = await _requestToken();
+  Future<void> login(String username, String password) async {
+    final Map<String, dynamic> response =
+        await _requestToken(username, password);
     if (response['statusCode'] == 200) {
-      context.read<UserAuth>().token = response['message']['access_token'];
+      context.read<UserAuth>().token =
+          response['message']['access_token'].toString();
+
       context.read<UserAuth>().tokenExpiryDate =
           response['message']['expires_in'].toString();
       context.read<UserAuth>().userState = UserState.loggedIn;
 
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('token', response['message']['access_token']);
-      prefs.setString('token_expires', response['message']['expires_in']);
+      prefs.setString(
+          'token_expires', response['message']['expires_in'].toString());
 
       final User user = await UserService(context)
           .fetchUser(email: 'josef.atoui97@gmail.com');

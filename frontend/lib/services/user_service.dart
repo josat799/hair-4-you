@@ -12,6 +12,13 @@ class UserService {
 
   UserService(this.context);
 
+  Future<void> createUser(User user) async {
+    var response = await http.post(Uri.http("localhost:8888", 'register'),
+        body: jsonEncode(user));
+
+    print(response.statusCode);
+  }
+
   Future<User> fetchUser({String? email}) async {
     int id = context.read<UserAuth>().id!;
     String path;
