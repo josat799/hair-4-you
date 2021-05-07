@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/models/user.dart';
 import 'package:frontend/providers/user_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -32,4 +33,9 @@ class OAuth {
       "statusCode": response.statusCode
     };
   }
+      final user = await UserService(context)
+          .fetchUser(email: 'josef.atoui97@gmail.com');
+      context.read<UserAuth>().id = user.id;
+      context.read<UserAuth>().user = user;
+      prefs.setInt('user_id', user.id!);
 }

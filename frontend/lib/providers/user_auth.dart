@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/models/user.dart';
 
 enum UserState {
   loggingIn,
@@ -11,7 +12,7 @@ enum UserState {
 class UserAuth with ChangeNotifier {
   UserAuth(this._clientID);
 
-  Map<String, dynamic> _user;
+  User? _user;
 
   int _id;
 
@@ -23,9 +24,9 @@ class UserAuth with ChangeNotifier {
 
   String _token = '';
 
-  get user => this._user;
+  User? get user => this._user;
 
-  set user(Map<String, dynamic> value) {
+  set user(User? value) {
     this._user = value;
     notifyListeners();
   }
