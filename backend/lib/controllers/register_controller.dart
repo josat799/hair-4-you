@@ -15,6 +15,7 @@ class RegisterController extends ResourceController {
     }
 
     user.createdAt = DateTime.now();
+    user.lastLoggedIn = DateTime.now();
     user.username = user.email;
     user.role = userType.customer;
 
