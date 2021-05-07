@@ -13,15 +13,15 @@ class UserAuth with ChangeNotifier {
 
   Map<String, dynamic> _user;
 
-  int _id;
+  int? _id;
 
   UserState _userState = UserState.LoggedOut;
 
   String _clientID = '';
 
-  String _tokenExpiryDate = '';
+  String? _tokenExpiryDate = '';
 
-  String _token = '';
+  String? _token = '';
 
   get user => this._user;
 
@@ -30,9 +30,9 @@ class UserAuth with ChangeNotifier {
     notifyListeners();
   }
 
-  get id => this._id;
+  int? get id => this._id;
 
-  set id(int value) {
+  set id(int? value) {
     this._id = value;
     notifyListeners();
   }
@@ -51,7 +51,7 @@ class UserAuth with ChangeNotifier {
     notifyListeners();
   }
 
-  get userState => this._userState;
+  UserState get userState => this._userState;
 
   set userState(UserState value) {
     this._userState = value;

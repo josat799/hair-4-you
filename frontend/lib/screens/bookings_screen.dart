@@ -9,7 +9,7 @@ class BookingsScreen extends StatefulWidget {
 }
 
 class _BookingsScreenState extends State<BookingsScreen> {
-  Future<List<dynamic>> _futureList;
+  Future<List<dynamic>>? _futureList;
 
   @override
   initState() {
@@ -24,10 +24,10 @@ class _BookingsScreenState extends State<BookingsScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
-              itemCount: snapshot.data.length,
+              itemCount: snapshot.data?.length,
               itemBuilder: (_, index) => Center(
                 child: Card(
-                  child: Text('${snapshot.data[index]['title']}'),
+                  child: Text('${snapshot.data?[index]['title']}'),
                 ),
               ),
             );
