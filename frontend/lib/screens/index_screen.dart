@@ -21,7 +21,7 @@ class _IndexScreenState extends State<IndexScreen> {
 
   Future<void> checkToken() async {
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token') ?? null;
+    final String token = prefs.getString('token') ?? '';
     print(token);
     if (token.isNotEmpty) {
       context.read<UserAuth>().token = token;
