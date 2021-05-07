@@ -48,11 +48,11 @@ class OAuth {
       prefs.setString('token', response['message']['access_token']);
       prefs.setString('token_expires', response['message']['expires_in']);
 
-      final user = await UserService(context)
+      final User user = await UserService(context)
           .fetchUser(email: 'josef.atoui97@gmail.com');
-      context.read<UserAuth>().id = user['id'];
+      context.read<UserAuth>().id = user.id;
       context.read<UserAuth>().user = user;
-      prefs.setString('user_id', user['id']);
+      prefs.setInt('user_id', user.id!);
     }
   }
 }
