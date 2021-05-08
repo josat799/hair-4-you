@@ -11,14 +11,25 @@ class LoginMenu extends StatefulWidget {
 }
 
 class _LoginMenuState extends State<LoginMenu> {
-  GlobalKey<FormState> _key = GlobalKey<FormState>();
+  late GlobalKey<FormState> _key;
+  late UserState watchState;
   Map<String, String> userCredentials = {};
 
   @override
-  Widget build(BuildContext context) {
-    UserState watchState = context.watch<UserAuth>().userState;
-    UserState readState = context.read<UserAuth>().userState;
+  void initState() {
+    _key = GlobalKey<FormState>();
 
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    watchState = context.watch<UserAuth>().userState;
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     print(watchState);
     return SizedBox.expand(
       child: watchState == UserState.loggingIn
@@ -60,7 +71,6 @@ class _LoginMenuState extends State<LoginMenu> {
                                   userCredentials['username']!,
                                   userCredentials['password']!,
                                 );
-                                readState = UserState.loggedIn;
                                 Navigator.pop(context);
                               }
                             },
@@ -77,16 +87,12 @@ class _LoginMenuState extends State<LoginMenu> {
                 Spacer(),
                 ElevatedButton(
                   onPressed: () async {
-                    readState = UserState.loggingIn;
-
                     await OAuth(
                       context,
                     ).login(
                       'josef.atoui97@gmail.com',
                       '1234',
                     );
-
-                    readState = UserState.loggedIn;
                   },
                   child: Text('SuperLogin'),
                 ),
@@ -133,13 +139,15 @@ class _LoginMenuState extends State<LoginMenu> {
                 )
               : Container(),
           TextFormField(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+            onChanged: (value) {
+              password = value;
+            },
             onSaved: (value) {
               userCredentials['password'] = value!;
             },
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please fill in your email or username';
+                return 'Please enter a password';
               }
               return null;
             },
@@ -150,6 +158,7 @@ class _LoginMenuState extends State<LoginMenu> {
           ),
           context.watch<UserAuth>().userState == UserState.register
               ? TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please write your password again';
