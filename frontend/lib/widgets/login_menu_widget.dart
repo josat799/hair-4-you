@@ -42,7 +42,7 @@ class _LoginMenuState extends State<LoginMenu> {
                     ? Column(
                         children: [
                           ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (_key.currentState!.validate()) {
                                 _key.currentState!.save();
                                 User user = User(
@@ -50,7 +50,12 @@ class _LoginMenuState extends State<LoginMenu> {
                                   userCredentials['name']!,
                                   password: userCredentials['password']!,
                                 );
-                                UserService(context).createUser(user);
+                                final User? createdUser =
+                                    await UserService(context).createUser(user);
+                                if (createdUser != null) {
+                                  await OAuth(context)
+                                      .login(user.email, user.password!);
+                                }
                                 Navigator.pop(context);
                               }
                             },
