@@ -38,8 +38,6 @@ class UserService {
     User fetchedUser = decodedBody[0] == null
         ? User.fromJson(decodedBody)
         : User.fromJson(decodedBody[0]);
-
-    print(fetchedUser);
     return fetchedUser;
   }
 }
