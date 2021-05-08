@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/services/OAuth.dart';
 import 'package:frontend/providers/user_auth.dart';
-import 'package:frontend/services/user_service.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
@@ -75,46 +74,25 @@ class _LoginState extends State<Login> {
                               context,
                               loginInformation['username'],
                               loginInformation['password'],
-                            ).requestToken();
-                            if (response['statusCode'] == 200) {
-                              context.read<UserAuth>().token =
-                                  response['message']['access_token'];
-                              context.read<UserAuth>().tokenExpiryDate =
-                                  response['message']['expires_in'].toString();
-                              context.read<UserAuth>().userState =
-                                  UserState.loggedIn;
-
-                              final response1 = await UserService(context)
-                                  .fetchUser(
-                                      email: loginInformation['username']);
-                              context.read<UserAuth>().id = response1['id'];
-
+                            ).login();
+                            
+                          
                               Navigator.pop(context);
                             }
-                          }
+                          
                         },
                         child: Text('Login'),
                       ),
                       ElevatedButton(
                           onPressed: () async {
-                            final response = await OAuth(
+                            await OAuth(
                               context,
                               'josef.atoui97@gmail.com',
                               '1234',
-                            ).requestToken();
-                            if (response['statusCode'] == 200) {
-                              context.read<UserAuth>().token =
-                                  response['message']['access_token'];
-                              context.read<UserAuth>().tokenExpiryDate =
-                                  response['message']['expires_in'].toString();
-                              context.read<UserAuth>().userState =
-                                  UserState.loggedIn;
-
-                              final response1 = await UserService(context)
-                                  .fetchUser(email: 'josef.atoui97@gmail.com');
-                              context.read<UserAuth>().id = response1['id'];
-                              context.read<UserAuth>().user = response1;
-                            }
+                            ).login();
+                            
+                              
+                            
                           },
                           child: Text('SuperLogin')),
                     ],

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/providers/user_auth.dart';
+import 'package:frontend/screens/bookings_screen.dart';
 import 'package:frontend/screens/user_profile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/widgets/login_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IndexScreen extends StatefulWidget {
   static const ROUTENAME = '/';
@@ -13,7 +15,18 @@ class IndexScreen extends StatefulWidget {
 class _IndexScreenState extends State<IndexScreen> {
   @override
   void initState() {
+    checkToken();
     super.initState();
+  }
+
+  Future<void> checkToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token') ?? null;
+    print(token);
+    if (token.isNotEmpty) {
+      context.read<UserAuth>().token = token;
+      context.read<UserAuth>().userState = UserState.loggedIn;
+    }
   }
 
   @override
@@ -27,18 +40,36 @@ class _IndexScreenState extends State<IndexScreen> {
         ],
       ),
       body: Center(
-        child: ElevatedButton(
-          child: Text('See your profile'),
-          onPressed: () {
-            if (context.read<UserAuth>().userState != UserState.loggedIn) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text('You are not logged in'),
-              ));
-              return;
-            }
-            var id = context.read<UserAuth>().id;
-            Navigator.pushNamed(context, '${UserProfileScreen.ROUTENAME}/$id');
-          },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            ElevatedButton(
+              child: Text('See your profile'),
+              onPressed: () {
+                if (context.read<UserAuth>().userState != UserState.loggedIn) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('You are not logged in'),
+                  ));
+                  return;
+                }
+                var id = context.read<UserAuth>().id;
+                Navigator.pushNamed(
+                    context, '${UserProfileScreen.ROUTENAME}/$id');
+              },
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  if (context.read<UserAuth>().userState !=
+                      UserState.loggedIn) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('You are not logged in'),
+                    ));
+                    return;
+                  }
+                  Navigator.pushNamed(context, '${BookingsScreen.ROUTENAME}');
+                },
+                child: Text('See all bookings'))
+          ],
         ),
       ),
     );
