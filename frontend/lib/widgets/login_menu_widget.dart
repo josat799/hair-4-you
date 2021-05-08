@@ -33,7 +33,7 @@ class _LoginMenuState extends State<LoginMenu> {
                           if (_key.currentState!.validate()) {
                             _key.currentState!.save();
                             User user = User(
-                              userCredentials['email']!,
+                              userCredentials['username']!,
                               userCredentials['name']!,
                               password: userCredentials['password']!,
                             );
