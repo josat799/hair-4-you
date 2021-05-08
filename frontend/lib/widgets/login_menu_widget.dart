@@ -133,6 +133,7 @@ class _LoginMenuState extends State<LoginMenu> {
                 )
               : Container(),
           TextFormField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             onSaved: (value) {
               userCredentials['password'] = value!;
             },
