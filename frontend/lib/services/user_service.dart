@@ -19,10 +19,9 @@ class UserService {
   }
 
   Future<User> fetchUser({String? email}) async {
-    int id = context.read<UserAuth>().id!;
+    int? id = context.read<UserAuth>().id;
     String path;
     Map<String, String> params = {};
-
     if (id == null && email!.isNotEmpty) {
       path = "/users";
       params['email'] = email;
