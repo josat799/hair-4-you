@@ -5,7 +5,6 @@ import 'package:frontend/models/user.dart';
 import 'package:frontend/providers/user_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-//import 'package:models/models.dart';
 
 class UserService {
   final BuildContext context;
