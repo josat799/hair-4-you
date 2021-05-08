@@ -52,6 +52,7 @@ class OAuth {
   }
 
   Future<void> login(String username, String password) async {
+    context.read<UserAuth>().userState = UserState.loggingIn;
     final Map<String, dynamic> response =
         await _requestToken(username, password);
     if (response['statusCode'] == 200) {
@@ -60,7 +61,6 @@ class OAuth {
 
       context.read<UserAuth>().tokenExpiryDate =
           response['message']['expires_in'].toString();
-      context.read<UserAuth>().userState = UserState.loggedIn;
 
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('token', response['message']['access_token']);
@@ -72,6 +72,9 @@ class OAuth {
       context.read<UserAuth>().id = user.id;
       context.read<UserAuth>().user = user;
       prefs.setInt('user_id', user.id!);
+      context.read<UserAuth>().userState = UserState.loggedIn;
+      return;
     }
+    context.read<UserAuth>().userState = UserState.LoggedOut;
   }
 }
