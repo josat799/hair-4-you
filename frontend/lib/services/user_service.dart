@@ -11,11 +11,20 @@ class UserService {
 
   UserService(this.context);
 
-  Future<void> createUser(User user) async {
-    var response = await http.post(Uri.http("localhost:8888", '/register'),
-        body: user.toJson());
+  Future<User?> createUser(User user) async {
+    String encodedUser = jsonEncode(user.toJson());
+    final String clientID = "${context.read<UserAuth>().clientID}";
+    final String clientCredentials =
+        const Base64Encoder().convert("$clientID:".codeUnits);
+    http.Response response = await http.post(
+        Uri.http('localhost:8888', '/register'),
+        headers: {
+          "Authorization": "Basic $clientCredentials",
+          'content-type': 'application/json'
+        },
+        body: encodedUser);
 
-    print(response.statusCode);
+    return response.statusCode == 200 ? User.fromJson(jsonDecode((response.body))): null;
   }
 
   Future<User> fetchUser({String? email}) async {
