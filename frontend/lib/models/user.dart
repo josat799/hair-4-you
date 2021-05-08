@@ -45,5 +45,6 @@ class User {
         'createdAt': createdAt,
         'lastLoggedIn': lastLoggedIn,
         'phoneNumber': phoneNumber,
+        'password': password,
       };
 }
