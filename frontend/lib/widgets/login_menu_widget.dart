@@ -70,10 +70,6 @@ class _LoginMenuState extends State<LoginMenu> {
                             onPressed: () async {
                               if (_key.currentState!.validate()) {
                                 _key.currentState!.save();
-
-                                context.read<UserAuth>().userState =
-                                    UserState.loggingIn;
-
                                 await OAuth(
                                   context,
                                 ).login(
