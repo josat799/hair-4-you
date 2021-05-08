@@ -16,9 +16,13 @@ class User {
 
   DateTime? lastLoggedIn;
 
-  User(this.email, this.name, 
-      {this.password, this.birthDate, this.createdAt,
-      this.phoneNumber, this.lastLoggedIn, this.id});
+  User(this.email, this.name,
+      {this.password,
+      this.birthDate,
+      this.createdAt,
+      this.phoneNumber,
+      this.lastLoggedIn,
+      this.id});
 
   User.fromJson(Map<String, dynamic> json)
       : name = json['name'],
