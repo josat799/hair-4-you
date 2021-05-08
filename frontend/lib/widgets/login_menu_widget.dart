@@ -177,14 +177,6 @@ class _LoginMenuState extends State<LoginMenu> {
                   ),
                   obscureText: true,
                 )
-              // TextFormField(
-              //   decoration: InputDecoration(
-              //       suffix: InkWell(
-              //     onTap: () => null,
-              //     child: Icon(Icons.date_range_outlined),
-              //   )),
-              // ),
-
               : Container(),
         ],
       ),
