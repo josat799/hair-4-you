@@ -25,10 +25,15 @@ class User {
   User.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         email = json['email'],
-        birthDate =
-            json['birthDate'] == null ? null : jsonDecode(json['birthDate']),
-        createdAt = jsonDecode(json['createdAt']),
-        lastLoggedIn = jsonDecode(json['lastLoggedIn']),
+        birthDate = json['birthDate'] == null
+            ? null
+            : DateTime.parse(json['birthDate']),
+        createdAt = json['createdAt'] == null
+            ? null
+            : DateTime.parse(json['createdAt']),
+        lastLoggedIn = json['lastLoggedIn'] == null
+            ? null
+            : DateTime.parse(json['lastLoggedIn']),
         phoneNumber = json['phoneNumber'],
         id = json['id'];
 
