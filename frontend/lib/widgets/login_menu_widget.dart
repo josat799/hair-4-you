@@ -39,20 +39,29 @@ class _LoginMenuState extends State<LoginMenu> {
                 Text('Welcome'),
                 _askForCredentials(),
                 watchState == UserState.register
-                    ? ElevatedButton(
-                        onPressed: () {
-                          if (_key.currentState!.validate()) {
-                            _key.currentState!.save();
-                            User user = User(
-                              userCredentials['username']!,
-                              userCredentials['name']!,
-                              password: userCredentials['password']!,
-                            );
-                            UserService(context).createUser(user);
-                            Navigator.pop(context);
-                          }
-                        },
-                        child: Text('Create account'),
+                    ? Column(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              if (_key.currentState!.validate()) {
+                                _key.currentState!.save();
+                                User user = User(
+                                  userCredentials['username']!,
+                                  userCredentials['name']!,
+                                  password: userCredentials['password']!,
+                                );
+                                UserService(context).createUser(user);
+                                Navigator.pop(context);
+                              }
+                            },
+                            child: Text('Create account'),
+                          ),
+                          TextButton(
+                              onPressed: () => context
+                                  .read<UserAuth>()
+                                  .userState = UserState.LoggedOut,
+                              child: Text('Already have an account?'))
+                        ],
                       )
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
