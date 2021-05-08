@@ -98,6 +98,7 @@ class _LoginMenuState extends State<LoginMenu> {
                       'josef.atoui97@gmail.com',
                       '1234',
                     );
+                    Navigator.pop(context);
                   },
                   child: Text('SuperLogin'),
                 ),
