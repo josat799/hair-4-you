@@ -50,10 +50,10 @@ class _LoginMenuState extends State<LoginMenu> {
                             onPressed: () async {
                               if (_key.currentState!.validate()) {
                                 _key.currentState!.save();
-                                setState(() {
-                                  context.read<UserAuth>().userState =
-                                      UserState.loggingIn;
-                                });
+
+                                context.read<UserAuth>().userState =
+                                    UserState.loggingIn;
+
                                 await OAuth(
                                   context,
                                 ).login(
@@ -77,18 +77,16 @@ class _LoginMenuState extends State<LoginMenu> {
                 Spacer(),
                 ElevatedButton(
                   onPressed: () async {
-                    setState(() {
-                      readState = UserState.loggingIn;
-                    });
+                    readState = UserState.loggingIn;
+
                     await OAuth(
                       context,
                     ).login(
                       'josef.atoui97@gmail.com',
                       '1234',
                     );
-                    setState(() {
-                      readState = UserState.loggedIn;
-                    });
+
+                    readState = UserState.loggedIn;
                   },
                   child: Text('SuperLogin'),
                 ),
