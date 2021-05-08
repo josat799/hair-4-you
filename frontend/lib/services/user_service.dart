@@ -12,8 +12,8 @@ class UserService {
   UserService(this.context);
 
   Future<void> createUser(User user) async {
-    var response = await http.post(Uri.http("localhost:8888", 'register'),
-        body: jsonEncode(user));
+    var response = await http.post(Uri.http("localhost:8888", '/register'),
+        body: user.toJson());
 
     print(response.statusCode);
   }
