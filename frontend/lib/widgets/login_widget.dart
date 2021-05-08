@@ -39,15 +39,12 @@ class _LoginState extends State<Login> {
               Radius.circular(8.0),
             ),
           ),
-          content: SizedBox(
-            height: 300,
-            child: Container(
-              child: ElevatedButton(
-                child: Text("Sign Out"),
-                onPressed: () {
-                  OAuth(context).logout();
-                },
-              ),
+          content: Container(
+            child: ElevatedButton(
+              child: Text("Sign Out"),
+              onPressed: () {
+                OAuth(context).logout();
+              },
             ),
           ),
         );
@@ -59,17 +56,20 @@ class _LoginState extends State<Login> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(8.0),
+        return StatefulBuilder(builder: (_, __) {
+          UserState state = context.watch<UserAuth>().userState;
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(8.0),
+              ),
             ),
-          ),
-          content: SizedBox(
-            height: 200,
-            child: LoginMenu(),
-          ),
-        );
+            content: SizedBox(
+              height: state != UserState.register ? 250 : 400,
+              child: LoginMenu(),
+            ),
+          );
+        });
       },
     );
   }
