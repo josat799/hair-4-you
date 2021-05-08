@@ -75,6 +75,7 @@ Primairly for frontend you will need the latest DART-SDK togheter with FLutter 2
 Primairly for the database you will need PostgesSQL 12.
 
 ## Links and miscellaneous
+### Mid-Course Presentation
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/sGXtVhGQlbA/0.jpg)](https://www.youtube.com/watch?v=sGXtVhGQlbA)
 
 
