@@ -42,8 +42,9 @@ class _LoginState extends State<Login> {
           content: Container(
             child: ElevatedButton(
               child: Text("Sign Out"),
-              onPressed: () {
-                OAuth(context).logout();
+              onPressed: () async {
+                await OAuth(context).logout();
+                Navigator.pop(context);
               },
             ),
           ),
