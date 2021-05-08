@@ -32,13 +32,13 @@ class _LoginMenuState extends State<LoginMenu> {
                         onPressed: () {
                           if (_key.currentState!.validate()) {
                             _key.currentState!.save();
-                            UserService(context).createUser(
-                              User(
-                                userCredentials['email']!,
-                                userCredentials['name']!,
-                                password: userCredentials['password']!,
-                              ),
+                            User user = User(
+                              userCredentials['email']!,
+                              userCredentials['name']!,
+                              password: userCredentials['password']!,
                             );
+                            UserService(context).createUser(user);
+                            Navigator.pop(context);
                           }
                         },
                         child: Text('Create account'),
