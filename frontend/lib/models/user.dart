@@ -1,21 +1,24 @@
 class User {
-  final int? id;
-  final String name;
+  int? id;
+  
+  String? name;
 
   String email;
 
   String? phoneNumber;
 
-  final DateTime? birthDate;
+  DateTime? birthDate;
 
-  final DateTime? createdAt;
+  DateTime? createdAt;
 
   String? password;
 
   DateTime? lastLoggedIn;
 
-  User(this.email, this.name,
-      {this.password,
+  User(
+      {required this.email,
+      this.name,
+      this.password,
       this.birthDate,
       this.createdAt,
       this.phoneNumber,
