@@ -18,7 +18,6 @@ class _LoginMenuState extends State<LoginMenu> {
   @override
   void initState() {
     _key = GlobalKey<FormState>();
-
     super.initState();
   }
 
@@ -26,6 +25,40 @@ class _LoginMenuState extends State<LoginMenu> {
   void didChangeDependencies() {
     watchState = context.watch<UserAuth>().userState;
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Future<void> _createUser() async {
+    if (_key.currentState!.validate()) {
+      _key.currentState!.save();
+      User user = User(
+        email: userCredentials['email']!,
+        name: userCredentials['name']!,
+        password: userCredentials['password']!,
+      );
+      final User? createdUser = await UserService(context).createUser(user);
+      if (createdUser != null) {
+        await OAuth(context).login(user.email, user.password!);
+      }
+      Navigator.pop(context);
+    }
+  }
+
+  Future<void> _signIn() async {
+    if (_key.currentState!.validate()) {
+      _key.currentState!.save();
+      await OAuth(
+        context,
+      ).login(
+        userCredentials['email']!,
+        userCredentials['password']!,
+      );
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -42,23 +75,7 @@ class _LoginMenuState extends State<LoginMenu> {
                     ? Column(
                         children: [
                           ElevatedButton(
-                            onPressed: () async {
-                              if (_key.currentState!.validate()) {
-                                _key.currentState!.save();
-                                User user = User(
-                                  userCredentials['username']!,
-                                  userCredentials['name']!,
-                                  password: userCredentials['password']!,
-                                );
-                                final User? createdUser =
-                                    await UserService(context).createUser(user);
-                                if (createdUser != null) {
-                                  await OAuth(context)
-                                      .login(user.email, user.password!);
-                                }
-                                Navigator.pop(context);
-                              }
-                            },
+                            onPressed: _createUser,
                             child: Text('Create account'),
                           ),
                           TextButton(
@@ -72,18 +89,7 @@ class _LoginMenuState extends State<LoginMenu> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ElevatedButton(
-                            onPressed: () async {
-                              if (_key.currentState!.validate()) {
-                                _key.currentState!.save();
-                                await OAuth(
-                                  context,
-                                ).login(
-                                  userCredentials['username']!,
-                                  userCredentials['password']!,
-                                );
-                                Navigator.pop(context);
-                              }
-                            },
+                            onPressed: _signIn,
                             child: Text('Sign In'),
                           ),
                           ElevatedButton(
@@ -113,6 +119,7 @@ class _LoginMenuState extends State<LoginMenu> {
   }
 
   Form _askForCredentials() {
+    TextEditingController passwordController = TextEditingController();
     String password = '';
     return Form(
       key: _key,
@@ -120,7 +127,7 @@ class _LoginMenuState extends State<LoginMenu> {
         children: [
           TextFormField(
             onSaved: (value) {
-              userCredentials['username'] = value!;
+              userCredentials['email'] = value!;
             },
             validator: (value) {
               if (value!.isEmpty) {
@@ -134,11 +141,9 @@ class _LoginMenuState extends State<LoginMenu> {
           ),
           context.watch<UserAuth>().userState == UserState.register
               ? TextFormField(
+                  controller: passwordController,
                   onSaved: (value) {
                     userCredentials['name'] = value!;
-                  },
-                  onChanged: (value) {
-                    password = value;
                   },
                   validator: (value) {
                     if (value!.isEmpty) {
