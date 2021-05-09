@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/user.dart';
 import 'package:frontend/services/user_service.dart';
-import 'package:frontend/widgets/profile_widget.dart';
+import 'package:frontend/widgets/profile_widgets/profile_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/providers/user_auth.dart';
 
