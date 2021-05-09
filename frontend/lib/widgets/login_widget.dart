@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/providers/user_auth.dart';
 import 'package:frontend/services/OAuth.dart';
 import 'package:frontend/widgets/login_menu_widget.dart';
+import 'package:frontend/widgets/profile_widgets/simple_profile.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
@@ -23,7 +24,7 @@ class _LoginState extends State<Login> {
       },
       child: Text(
         context.watch<UserAuth>().userState == UserState.loggedIn
-            ? "Sign Out" //TODO: add showSimpleProfile()
+            ? "Sign Out"
             : "Sign In",
       ),
     );
@@ -32,21 +33,24 @@ class _LoginState extends State<Login> {
   void _showSimpleProfile() {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (ctx) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(8.0),
-            ),
-          ),
-          content: Container(
-            child: ElevatedButton(
+          actions: [
+            ElevatedButton(
               child: Text("Sign Out"),
               onPressed: () async {
                 await OAuth(context).logout();
                 Navigator.pop(context);
               },
             ),
+          ],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(8.0),
+            ),
+          ),
+          content: Container(
+            child: SimpleProfile(),
           ),
         );
       },
