@@ -40,6 +40,41 @@
       });
     }
   </script>
+
+   <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('flutter-first-frame', function () {
+        navigator.serviceWorker.register('flutter_service_worker.js');
+      });
+    }
+  </script>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyBWKmmp7JkAXaGM4ZhsF2iLQbIjBU95gFM",
+    authDomain: "hair-4-you.firebaseapp.com",
+    projectId: "hair-4-you",
+    storageBucket: "hair-4-you.appspot.com",
+    messagingSenderId: "473268649506",
+    appId: "1:473268649506:web:80bc3206f2303ed966d47b",
+    measurementId: "G-NX3KXDHY8B"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+
+
+
+
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>
