@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/user.dart';
 import 'package:frontend/services/OAuth.dart';
+import 'package:frontend/services/google_service.dart';
 import 'package:frontend/services/user_service.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/providers/user_auth.dart';
@@ -100,6 +101,27 @@ class _LoginMenuState extends State<LoginMenu> {
                               child: Text('Sign Up')),
                         ],
                       ),
+                InkWell(
+                  child: Card(
+                    elevation: 8,
+                    color: Colors.transparent,
+                    child: Container(
+                      height: 20,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(
+                                '../../assets/google/btn_google_signin_dark.png'),
+                            scale: 1,
+                            repeat: ImageRepeat.noRepeat,
+                            fit: BoxFit.cover),
+                      ),
+                    ),
+                  ),
+                  onTap: () async {
+                    await GoogleService(context).login();
+                    Navigator.pop(context);
+                  },
+                ),
                 Spacer(),
                 ElevatedButton(
                   onPressed: () async {

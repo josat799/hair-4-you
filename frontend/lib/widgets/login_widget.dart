@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/providers/user_auth.dart';
 import 'package:frontend/services/OAuth.dart';
+import 'package:frontend/services/google_service.dart';
 import 'package:frontend/widgets/login_menu_widget.dart';
 import 'package:frontend/widgets/profile_widgets/simple_profile.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +40,11 @@ class _LoginState extends State<Login> {
             ElevatedButton(
               child: Text("Sign Out"),
               onPressed: () async {
-                await OAuth(context).logout();
+                if (context.read<UserAuth>().loggedInWithGoogle!) {
+                  await GoogleService(context).logout();
+                } else {
+                  await OAuth(context).logout();
+                }
                 Navigator.pop(context);
               },
             ),
@@ -50,7 +55,9 @@ class _LoginState extends State<Login> {
             ),
           ),
           content: Container(
-            child: SimpleProfile(),
+            child: context.watch<UserAuth>().loggedInWithGoogle!
+                ? Container()
+                : SimpleProfile(),
           ),
         );
       },
