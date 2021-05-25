@@ -21,7 +21,6 @@ class UserController extends ResourceController {
   @Operation.get()
   Future<Response> getUsers({@Bind.query("email") String email}) async {
     final query = Query<ManagedUser>(context);
-    print(email.isEmpty);
     if (email != null) {
       query..where((u) => u.email).equalTo(email);
     }
