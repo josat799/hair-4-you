@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:frontend/models/user.dart';
 import 'package:multi_wizard/multi_wizard.dart';
 
@@ -11,45 +12,29 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
-    DateTime selectedDate = DateTime.now();
+  DateTime selectedDate = DateTime.now();
   late User _user;
-  late GlobalKey<FormState> _emailKey;
-  late GlobalKey<FormState> _passwordKey;
-  late GlobalKey<FormState> _nameKey;
+  late GlobalKey<FormState> _key;
+
   String _password = '';
 
   @override
   void initState() {
-    _emailKey = GlobalKey<FormState>();
-    _passwordKey = GlobalKey<FormState>();
-    _nameKey = GlobalKey<FormState>();
+    _key = GlobalKey<FormState>();
     super.initState();
   }
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = picked;
-      });
-  }
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 250,
       child: Form(
+        key: _key,
         child: MultiWizard(
           finishFunction: () {
-            if (_emailKey.currentState!.validate() &&
-                _passwordKey.currentState!.validate() &&
-                _nameKey.currentState!.validate()) {
-              _emailKey.currentState!.save();
-              _nameKey.currentState!.save();
-              _passwordKey.currentState!.save();
+            if (_key.currentState!.validate()) {
+              _key.currentState!.save();
+
               widget.signUpFunction(_user);
             }
           },
@@ -60,7 +45,6 @@ class _RegisterFormState extends State<RegisterForm> {
               child: Column(
                 children: [
                   TextFormField(
-                    key: _nameKey,
                     onSaved: (value) => _user.name = value,
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -71,7 +55,6 @@ class _RegisterFormState extends State<RegisterForm> {
                     decoration: const InputDecoration(hintText: 'Your Name'),
                   ),
                   TextFormField(
-                    key: _emailKey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -103,7 +86,6 @@ class _RegisterFormState extends State<RegisterForm> {
                     obscureText: true,
                   ),
                   TextFormField(
-                    key: _passwordKey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value!.isEmpty || value != _password) {
@@ -119,7 +101,25 @@ class _RegisterFormState extends State<RegisterForm> {
                 ],
               ),
             ),
-            WizardStep(child: TextFormField()),
+            WizardStep(
+              child: Column(
+                children: [
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: 'Your Birthdate (E.g 1997-05-30)',
+                    ),
+                    validator: (value) {
+                      if (DateTime.tryParse(value!) == null) {
+                        return 'Try putting in a correct date';
+                      }
+                    },
+                    onSaved: (value) {
+                      _user.birthDate = DateTime.parse(value!);
+                    },
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
