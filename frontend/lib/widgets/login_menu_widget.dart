@@ -3,6 +3,7 @@ import 'package:frontend/models/user.dart';
 import 'package:frontend/services/OAuth.dart';
 import 'package:frontend/services/google_service.dart';
 import 'package:frontend/services/user_service.dart';
+import 'package:frontend/widgets/forms_widgets/login_form.dart';
 import 'package:frontend/widgets/forms_widgets/register_form.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/providers/user_auth.dart';
@@ -34,20 +35,15 @@ class _LoginMenuState extends State<LoginMenu> {
     super.dispose();
   }
 
-  Future<void> _createUser() async {
-    if (_key.currentState!.validate()) {
-      _key.currentState!.save();
-      User user = User(
-        email: userCredentials['email']!,
-        name: userCredentials['name']!,
-        password: userCredentials['password']!,
-      );
+  Future<void> _createUser(User user) async {
+    
+    
       final User? createdUser = await UserService(context).createUser(user);
       if (createdUser != null) {
         await OAuth(context).login(user.email, user.password!);
       }
       Navigator.pop(context);
-    }
+    
   }
 
   Future<void> _signIn(Map<String, dynamic> data) async {
@@ -73,10 +69,6 @@ class _LoginMenuState extends State<LoginMenu> {
                 watchState == UserState.register
                     ? Column(
                         children: [
-                          ElevatedButton(
-                            onPressed: _createUser,
-                            child: Text('Create account'),
-                          ),
                           TextButton(
                               onPressed: () => context
                                   .read<UserAuth>()
@@ -139,12 +131,9 @@ class _LoginMenuState extends State<LoginMenu> {
       key: _key,
       child: Container(
         width: double.infinity,
-        child: RegisterForm(),
-        // child: Stepper(
-        //   steps: context.watch<UserAuth>().userState == UserState.register
-        //       ? registerForm
-        //       : signInForm,
-        // ),
+        child: context.watch<UserAuth>().userState == UserState.register
+            ? RegisterForm(_createUser)
+            : LoginForm(_signIn),
       ),
     );
   }
