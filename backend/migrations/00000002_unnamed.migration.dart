@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:aqueduct/aqueduct.dart';   
 
-class Migration5 extends Migration { 
+class Migration2 extends Migration { 
   @override
   Future upgrade() async {
    
