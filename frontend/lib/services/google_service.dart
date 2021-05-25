@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/providers/user_auth.dart';
+import 'package:frontend/services/OAuth.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,8 @@ class GoogleService {
       await _googleSignIn.signIn();
 
       account = _googleSignIn.currentUser!;
+
+      OAuth(context).verifyGoogle((await account.authentication).idToken!);
       context.read<UserAuth>().userState = UserState.loggedIn;
       context.read<UserAuth>().loggedInWithGoogle = true;
     } catch (error) {
