@@ -7,7 +7,14 @@ class BlogPostController extends ResourceController {
 
   @Operation.get()
   Future<Response> getBlogPost() async {
-    final query = Query<ManagedBlogPost>(context);
+    final query = Query<ManagedBlogPost>(context)
+      ..join<ManagedUser>(object: (blogpost) => blogpost.author)
+          .returningProperties(
+        (user) => [
+          user.name,
+        ],
+      );
+
     return Response.ok(await query.fetch());
   }
 
@@ -26,25 +33,35 @@ class BlogPostController extends ResourceController {
 
   @Operation.post()
   Future<Response> addBlogPost(
-      @Bind.body(ignore: ["id"]) ManagedBlogPost blogPost) async {
-    final query = Query<ManagedBlogPost>(context)..values = blogPost;
+      @Bind.body(ignore: ["id", "createdAt"]) ManagedBlogPost blogPost) async {
+    if (request.authorization.ownerID == null) {
+      return Response.forbidden();
+    }
+    final query = Query<ManagedBlogPost>(context)
+      ..values = blogPost
+      ..values.author.id = request.authorization.ownerID
+      ..values.createdAt = DateTime.now();
+
     return Response.ok(await query.insert());
   }
 
-
-@Operation.put('id')
+  @Operation.put('id')
   Future<Response> updateBlogPost(@Bind.path('id') int id,
       @Bind.body(ignore: ["id"]) ManagedBlogPost blogPost) async {
+    if (request.authorization.ownerID == null) {
+      return Response.forbidden();
+    }
     final query = Query<ManagedBlogPost>(context)
       ..where((blogPost) => blogPost.id).equalTo(id)
       ..values = blogPost;
     return Response.ok(await query.updateOne());
   }
 
-
-
-@Operation.delete('id')
+  @Operation.delete('id')
   Future<Response> deleteBlogPostByID(@Bind.path('id') int id) async {
+    if (request.authorization.ownerID == null) {
+      return Response.forbidden();
+    }
     final query = Query<ManagedBlogPost>(context)
       ..where((blogPost) => blogPost.id).equalTo(id);
 
@@ -55,7 +72,4 @@ class BlogPostController extends ResourceController {
     }
     return Response.ok(await query.delete());
   }
-
 }
-
-
