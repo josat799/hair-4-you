@@ -12,6 +12,8 @@ enum UserState {
 class UserAuth with ChangeNotifier {
   UserAuth(this._clientID);
 
+  bool? _isLoggedInWithGoogle = false;
+
   User? _user;
 
   int? _id;
@@ -25,6 +27,13 @@ class UserAuth with ChangeNotifier {
   String? _token = '';
 
   User? get user => this._user;
+
+  set loggedInWithGoogle(bool? value) {
+    this._isLoggedInWithGoogle = value;
+    notifyListeners();
+  }
+
+  bool? get loggedInWithGoogle => this._isLoggedInWithGoogle;
 
   set user(User? value) {
     this._user = value;

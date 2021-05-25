@@ -7,7 +7,7 @@ class RegisterController extends ResourceController {
   final AuthServer authServer;
 
   @Operation.post()
-  Future<Response> createUser(@Bind.body() ManagedUser user) async {
+  Future<Response> createUser(@Bind.body(ignore: ["id"]) ManagedUser user) async {
     // Check for required parameters before we spend time hashing
     if (user.password == null || user.email == null) {
       return Response.badRequest(
@@ -15,6 +15,7 @@ class RegisterController extends ResourceController {
     }
 
     user.createdAt = DateTime.now();
+    user.lastLoggedIn = DateTime.now();
     user.username = user.email;
     user.role = userType.customer;
 

@@ -48,9 +48,13 @@ class Hair4YouChannel extends ApplicationChannel {
 
     router
         .route("/register")
+        .link(() => Authorizer.basic(authServer))
         .link(() => RegisterController(context, authServer));
 
     router.route("/login").link(() => AuthController(authServer));
+
+    router.route('/google').link(() => Authorizer.basic(authServer))
+    .link(() => GoogleController(context));
 
     router
         .route("/example")
