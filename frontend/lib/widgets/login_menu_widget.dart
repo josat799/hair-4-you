@@ -3,6 +3,7 @@ import 'package:frontend/models/user.dart';
 import 'package:frontend/services/OAuth.dart';
 import 'package:frontend/services/google_service.dart';
 import 'package:frontend/services/user_service.dart';
+import 'package:frontend/widgets/forms_widgets/register_form.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/providers/user_auth.dart';
 
@@ -143,75 +144,59 @@ class _LoginMenuState extends State<LoginMenu> {
   Form _askForCredentials() {
     TextEditingController passwordController = TextEditingController();
     String password = '';
-    return Form(
-      key: _key,
-      child: Column(
-        children: [
-          TextFormField(
+
+    List<Step> signInForm = [
+      Step(
+        content: Container(
+          child: TextFormField(
             onSaved: (value) {
               userCredentials['email'] = value!;
             },
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please fill in your email or username';
+                return 'Please fill in your email';
               }
               return null;
             },
             decoration: const InputDecoration(
-              hintText: 'Username/Email',
+              hintText: 'Email',
             ),
           ),
-          context.watch<UserAuth>().userState == UserState.register
-              ? TextFormField(
-                  controller: passwordController,
-                  onSaved: (value) {
-                    userCredentials['name'] = value!;
-                  },
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please fill in your name';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(hintText: 'Your Name'),
-                )
-              : Container(),
-          TextFormField(
-            onChanged: (value) {
-              password = value;
-            },
-            onSaved: (value) {
-              userCredentials['password'] = value!;
-            },
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please enter a password';
-              }
-              return null;
-            },
-            decoration: const InputDecoration(
-              hintText: 'Password',
-            ),
-            obscureText: true,
+        ),
+        title: Text(''),
+      ),
+      Step(
+        content: TextFormField(
+          onChanged: (value) {
+            password = value;
+          },
+          onSaved: (value) {
+            userCredentials['password'] = value!;
+          },
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Please enter a password';
+            }
+            return null;
+          },
+          decoration: const InputDecoration(
+            hintText: 'Password',
           ),
-          context.watch<UserAuth>().userState == UserState.register
-              ? TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please write your password again';
-                    } else if (value.contains(password)) {
-                      return 'The password does not match';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    hintText: 'Password again',
-                  ),
-                  obscureText: true,
-                )
-              : Container(),
-        ],
+          obscureText: true,
+        ),
+        title: Text(''),
+      ),
+    ];
+    return Form(
+      key: _key,
+      child: Container(
+        width: double.infinity,
+        child: RegisterForm(),
+        // child: Stepper(
+        //   steps: context.watch<UserAuth>().userState == UserState.register
+        //       ? registerForm
+        //       : signInForm,
+        // ),
       ),
     );
   }

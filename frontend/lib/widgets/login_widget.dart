@@ -77,7 +77,8 @@ class _LoginState extends State<Login> {
               ),
             ),
             content: SizedBox(
-              height: state != UserState.register ? 250 : 400,
+              height: 400,
+              width: double.infinity,
               child: LoginMenu(),
             ),
           );

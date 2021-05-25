@@ -3,6 +3,7 @@ import 'package:frontend/providers/user_auth.dart';
 import 'package:frontend/screens/bookings_screen.dart';
 import 'package:frontend/screens/user_profile_screen.dart';
 import 'package:frontend/services/user_service.dart';
+import 'package:frontend/widgets/forms_widgets/register_form.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/widgets/login_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,6 +48,7 @@ class _IndexScreenState extends State<IndexScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            RegisterForm(),
             ElevatedButton(
               child: Text('See your profile'),
               onPressed: () {
