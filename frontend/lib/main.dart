@@ -10,7 +10,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserAuth('com.hair4you.com')),
+        ChangeNotifierProvider(create: (_) => UserAuth('com.hair_for_you.web')),
       ],
       child: Hair4You(),
     ),
