@@ -10,12 +10,14 @@ environment:
 
 dependencies:
   aqueduct: ^3.0.0+1
+  googleapis: 0.56.1
+  googleapis_auth: 0.2.12+1
   models:
     path: /Users/rogge/developer/courses/tddd27/shared/models
 
 
 dependency_overrides:
-postgres: 2.1.1
+  postgres: 2.1.1
 
 dev_dependencies:
   test: ^1.0.0
