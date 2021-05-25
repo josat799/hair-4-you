@@ -50,17 +50,14 @@ class _LoginMenuState extends State<LoginMenu> {
     }
   }
 
-  Future<void> _signIn() async {
-    if (_key.currentState!.validate()) {
-      _key.currentState!.save();
-      await OAuth(
-        context,
-      ).login(
-        userCredentials['email']!,
-        userCredentials['password']!,
-      );
-      Navigator.pop(context);
-    }
+  Future<void> _signIn(Map<String, dynamic> data) async {
+    await OAuth(
+      context,
+    ).login(
+      data['email']!,
+      data['password']!,
+    );
+    Navigator.pop(context);
   }
 
   @override
@@ -90,10 +87,6 @@ class _LoginMenuState extends State<LoginMenu> {
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          ElevatedButton(
-                            onPressed: _signIn,
-                            child: Text('Sign In'),
-                          ),
                           ElevatedButton(
                               onPressed: () {
                                 context.read<UserAuth>().userState =
@@ -142,51 +135,6 @@ class _LoginMenuState extends State<LoginMenu> {
   }
 
   Form _askForCredentials() {
-    TextEditingController passwordController = TextEditingController();
-    String password = '';
-
-    List<Step> signInForm = [
-      Step(
-        content: Container(
-          child: TextFormField(
-            onSaved: (value) {
-              userCredentials['email'] = value!;
-            },
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please fill in your email';
-              }
-              return null;
-            },
-            decoration: const InputDecoration(
-              hintText: 'Email',
-            ),
-          ),
-        ),
-        title: Text(''),
-      ),
-      Step(
-        content: TextFormField(
-          onChanged: (value) {
-            password = value;
-          },
-          onSaved: (value) {
-            userCredentials['password'] = value!;
-          },
-          validator: (value) {
-            if (value!.isEmpty) {
-              return 'Please enter a password';
-            }
-            return null;
-          },
-          decoration: const InputDecoration(
-            hintText: 'Password',
-          ),
-          obscureText: true,
-        ),
-        title: Text(''),
-      ),
-    ];
     return Form(
       key: _key,
       child: Container(
