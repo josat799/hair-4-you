@@ -69,7 +69,6 @@ class _LoginState extends State<Login> {
       context: context,
       builder: (context) {
         return StatefulBuilder(builder: (_, __) {
-          UserState state = context.watch<UserAuth>().userState;
           return AlertDialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(

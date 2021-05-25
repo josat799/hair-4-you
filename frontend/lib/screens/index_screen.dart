@@ -48,7 +48,6 @@ class _IndexScreenState extends State<IndexScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            RegisterForm(),
             ElevatedButton(
               child: Text('See your profile'),
               onPressed: () {
