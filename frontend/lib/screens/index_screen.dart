@@ -3,7 +3,7 @@ import 'package:frontend/providers/user_auth.dart';
 import 'package:frontend/screens/bookings_screen.dart';
 import 'package:frontend/screens/user_profile_screen.dart';
 import 'package:frontend/services/user_service.dart';
-import 'package:frontend/widgets/forms_widgets/register_form.dart';
+import 'package:frontend/widgets/blogpost.widgets/blog_post_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/widgets/login_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,13 +23,14 @@ class _IndexScreenState extends State<IndexScreen> {
 
   Future<void> checkToken() async {
     final prefs = await SharedPreferences.getInstance();
-    final String token = prefs.getString('token') ?? '';
+    final String? token = prefs.getString('token') ?? '';
     print(token);
-    if (token.isNotEmpty) {
+    if (token!.isNotEmpty) {
       context.read<UserAuth>().token = token;
       context.read<UserAuth>().id = prefs.getInt('user_id');
-      context.read<UserAuth>().user = await UserService(context).fetchUser();
-
+      context.read<UserAuth>().user = await UserService(context).fetchUser(
+        id: prefs.getInt('user_id'),
+      );
       context.read<UserAuth>().userState = UserState.loggedIn;
     }
   }
@@ -48,6 +49,7 @@ class _IndexScreenState extends State<IndexScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            Container(height: 100, child: ViewableBlogPost(6)),
             ElevatedButton(
               child: Text('See your profile'),
               onPressed: () {
