@@ -12,7 +12,7 @@ enum UserState {
 class UserAuth with ChangeNotifier {
   UserAuth(this._clientID);
 
-  bool? _isLoggedInWithGoogle;
+  bool? _isLoggedInWithGoogle = false;
 
   User? _user;
 
