@@ -11,22 +11,41 @@ class BlogPostService {
 
   BlogPostService(this.context);
 
-  Future<List<BlogPost>> fetchBlogPosts({int? blogPostID}) async {
-    String path;
-    Map<String, String> headers;
+  Future<List<BlogPost>> fetchBlogPosts({bool? onlyVisiable}) async {
+    const String path = "/blogposts";
 
-    if (blogPostID == null) {
-      path = "/blogposts";
-      final clientID = context.read<UserAuth>().clientID;
-      final String clientCredentials =
-          const Base64Encoder().convert("$clientID:".codeUnits);
-      headers = {'Authorization': 'Basic $clientCredentials'};
+    final String clientCredentials = const Base64Encoder()
+        .convert("${context.read<UserAuth>().clientID}:".codeUnits);
+    
+    Map<String, String> headers = {'Authorization': 'Basic $clientCredentials'};
+    Map<String, String> params = {'visiable': ""};
+
+    http.Response response = await http.get(
+        Uri.http(
+          "localhost:8888",
+          path,
+          onlyVisiable != null && onlyVisiable ? params : null
+        ),
+        headers: headers);
+
+    if (response.statusCode == 200) {
+      dynamic decodedBody = json.decode(response.body);
+      Iterable<dynamic> l = decodedBody;
+      List<BlogPost> posts =
+          List<BlogPost>.from(l.map((blogPost) => BlogPost.fromJson(blogPost)));
+      return posts;
     } else {
-      path = "/restricted/blogposts/$blogPostID";
-      final String token = context.read<UserAuth>().token;
-      headers = {'Authorization': 'Bearer $token'};
+      throw Exception('No post available');
     }
-    var response = await http.get(
+  }
+
+  Future<List<BlogPost>> fetchBlogPostBYID({required int blogPostID}) async {
+    final String path = "/restricted/blogposts/$blogPostID";
+    ;
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ${context.read<UserAuth>().token}'
+    };
+    http.Response response = await http.get(
         Uri.http(
           "localhost:8888",
           path,
@@ -35,15 +54,11 @@ class BlogPostService {
 
     if (response.statusCode == 200) {
       dynamic decodedBody = json.decode(response.body);
-      if (blogPostID == null) {
-        Iterable<dynamic> l = decodedBody;
-        List<BlogPost> posts = List<BlogPost>.from(
-            l.map((blogPost) => BlogPost.fromJson(blogPost)));
-        return posts;
-      } else {
-        return [BlogPost.fromJson(decodedBody)];
-      }
-    }
-    return [];
+
+      Iterable<dynamic> l = decodedBody;
+      List<BlogPost> posts =
+          List<BlogPost>.from(l.map((blogPost) => BlogPost.fromJson(blogPost)));
+      return posts;
+    } else {throw Exception('No posts avaiable');}
   }
 }
