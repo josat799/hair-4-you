@@ -18,4 +18,7 @@ class BlogPost extends Post {
           author: author,
           createdAt: createdAt,
         );
+
+  @Column(nullable: false)
+  bool visiable;
 }
