@@ -6,7 +6,7 @@ class BlogPostController extends ResourceController {
   final ManagedContext context;
 
   @Operation.get()
-  Future<Response> getBlogPost() async {
+  Future<Response> getBlogPost({@Bind.query("visiable") bool visiable}) async {
     final query = Query<ManagedBlogPost>(context)
       ..join<ManagedUser>(object: (blogpost) => blogpost.author)
           .returningProperties(
@@ -14,6 +14,10 @@ class BlogPostController extends ResourceController {
           user.name,
         ],
       );
+
+    if (visiable != null) {
+      query.where((blogPost) => blogPost.visiable).equalTo(visiable);
+    }
 
     return Response.ok(await query.fetch());
   }
@@ -40,7 +44,8 @@ class BlogPostController extends ResourceController {
     final query = Query<ManagedBlogPost>(context)
       ..values = blogPost
       ..values.author.id = request.authorization.ownerID
-      ..values.createdAt = DateTime.now();
+      ..values.createdAt = DateTime.now()
+      ..values.visiable = blogPost.visiable ?? true;
 
     return Response.ok(await query.insert());
   }
