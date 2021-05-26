@@ -36,14 +36,11 @@ class _LoginMenuState extends State<LoginMenu> {
   }
 
   Future<void> _createUser(User user) async {
-    
-    
-      final User? createdUser = await UserService(context).createUser(user);
-      if (createdUser != null) {
-        await OAuth(context).login(user.email, user.password!);
-      }
-      Navigator.pop(context);
-    
+    final User? createdUser = await UserService(context).createUser(user);
+    if (createdUser != null) {
+      await OAuth(context).login(user.email!, user.password!);
+    }
+    Navigator.pop(context);
   }
 
   Future<void> _signIn(Map<String, dynamic> data) async {
@@ -111,11 +108,11 @@ class _LoginMenuState extends State<LoginMenu> {
                 Spacer(),
                 ElevatedButton(
                   onPressed: () async {
-                    await OAuth(
-                      context,
-                    ).login(
-                      'josef.atoui97@gmail.com',
-                      '1234',
+                    await _signIn(
+                      {
+                        'email': 'josef.atoui@live.se',
+                        'password': '1234',
+                      },
                     );
                     Navigator.pop(context);
                   },
