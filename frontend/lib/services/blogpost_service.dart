@@ -83,5 +83,24 @@ class BlogPostService {
     else
       throw Exception('Something went wrong');
   }
+
+  Future<void> deleteBlogPost(int blogPostID) async {
+    final String path = "/restricted/blogposts/$blogPostID";
+
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ${context.read<UserAuth>().token}'
+    };
+    http.Response response = await http.delete(
+        Uri.http(
+          "localhost:8888",
+          path,
+        ),
+        headers: headers);
+
+    if (response.statusCode == 200)
+      return;
+    else
+      throw Exception(
+          'Something went wrong! Status Code: ${response.statusCode}');
   }
 }
