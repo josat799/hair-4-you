@@ -4,6 +4,12 @@ import 'package:frontend/services/blogpost_service.dart';
 import 'package:frontend/widgets/blogpost_widgets/blog_post_widget.dart';
 
 class BlogPostMultiple extends StatefulWidget {
+  final bool onlyVisiable;
+
+  const BlogPostMultiple({required this.onlyVisiable});
+
+
+
   @override
   _BlogPostMultipleState createState() => _BlogPostMultipleState();
 }
@@ -16,12 +22,12 @@ class _BlogPostMultipleState extends State<BlogPostMultiple> {
     _stream = _fetchBlogPosts();
     super.initState();
   }
-
+  
   Stream<List<BlogPost>> _fetchBlogPosts() async* {
     yield* Stream.periodic(
       Duration(seconds: 10),
       (_) async => await BlogPostService(context).fetchBlogPosts(
-        onlyVisiable: true,
+        onlyVisiable: widget.onlyVisiable,
       ),
     ).asyncMap((event) async => await event);
   }
