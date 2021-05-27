@@ -69,7 +69,6 @@ class BlogPostService {
       'Content-Type': 'application/json',
     };
     final data = jsonEncode(blogPost.toJson());
-    print(data);
     http.Response response = await http.put(
       Uri.http(
         "localhost:8888",
@@ -79,6 +78,10 @@ class BlogPostService {
       body: data,
     );
 
-    print(response.statusCode);
+    if (response.statusCode == 200)
+      return;
+    else
+      throw Exception('Something went wrong');
+  }
   }
 }
