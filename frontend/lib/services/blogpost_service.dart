@@ -61,5 +61,24 @@ class BlogPostService {
     }
   }
 
+  Future<void> updateBlogPost({required BlogPost blogPost}) async {
+    final String path = "/restricted/blogposts/${blogPost.id}";
+
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ${context.read<UserAuth>().token}',
+      'Content-Type': 'application/json',
+    };
+    final data = jsonEncode(blogPost.toJson());
+    print(data);
+    http.Response response = await http.put(
+      Uri.http(
+        "localhost:8888",
+        path,
+      ),
+      headers: headers,
+      body: data,
+    );
+
+    print(response.statusCode);
   }
 }
