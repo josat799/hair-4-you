@@ -13,17 +13,17 @@ class _BlogPostMultipleState extends State<BlogPostMultiple> {
 
   @override
   void initState() {
-    _stream = Stream.fromFuture(_fetchBlogPosts());
+    _stream = _fetchBlogPosts();
     super.initState();
   }
 
-  Future<List<BlogPost>> _fetchBlogPosts() async {
-    return Future.delayed(
-      Duration(milliseconds: 1000),
-      () async => await BlogPostService(context).fetchBlogPosts(
+  Stream<List<BlogPost>> _fetchBlogPosts() async* {
+    yield* Stream.periodic(
+      Duration(seconds: 10),
+      (_) async => await BlogPostService(context).fetchBlogPosts(
         onlyVisiable: true,
       ),
-    );
+    ).asyncMap((event) async => await event);
   }
 
   @override
@@ -39,7 +39,10 @@ class _BlogPostMultipleState extends State<BlogPostMultiple> {
                   itemBuilder: (ctx, index) => Container(
                     width: 10,
                     child: SingleBlogPost(
-                      snapshot.data![index],
+                      blogPost: snapshot.data!.elementAt(index),
+                      key: PageStorageKey<int>(
+                        snapshot.data!.elementAt(index).id!,
+                      ),
                     ),
                   ),
                   itemCount: snapshot.data!.length,
