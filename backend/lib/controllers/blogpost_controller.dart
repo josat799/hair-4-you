@@ -13,7 +13,7 @@ class BlogPostController extends ResourceController {
         (user) => [
           user.name,
         ],
-      );
+      )..sortBy((blogPost) => blogPost.createdAt, QuerySortOrder.ascending);
 
     if (visiable != null) {
       query.where((blogPost) => blogPost.visiable).equalTo(visiable);
