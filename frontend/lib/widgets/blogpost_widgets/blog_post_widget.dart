@@ -3,8 +3,12 @@ import 'package:frontend/models/blogpost.models/blog_post.dart';
 
 class SingleBlogPost extends StatefulWidget {
   final BlogPost blogPost;
+  final Key? key;
 
-  SingleBlogPost(this.blogPost);
+  SingleBlogPost({
+    required this.blogPost,
+    this.key,
+  });
 
   @override
   _SingleBlogPostState createState() => _SingleBlogPostState();
