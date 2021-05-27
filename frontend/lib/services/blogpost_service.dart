@@ -16,16 +16,13 @@ class BlogPostService {
 
     final String clientCredentials = const Base64Encoder()
         .convert("${context.read<UserAuth>().clientID}:".codeUnits);
-    
+
     Map<String, String> headers = {'Authorization': 'Basic $clientCredentials'};
     Map<String, String> params = {'visiable': ""};
 
     http.Response response = await http.get(
-        Uri.http(
-          "localhost:8888",
-          path,
-          onlyVisiable != null && onlyVisiable ? params : null
-        ),
+        Uri.http("localhost:8888", path,
+            onlyVisiable != null && onlyVisiable ? params : null),
         headers: headers);
 
     if (response.statusCode == 200) {
@@ -41,7 +38,7 @@ class BlogPostService {
 
   Future<List<BlogPost>> fetchBlogPostBYID({required int blogPostID}) async {
     final String path = "/restricted/blogposts/$blogPostID";
-    ;
+
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${context.read<UserAuth>().token}'
     };
@@ -59,6 +56,10 @@ class BlogPostService {
       List<BlogPost> posts =
           List<BlogPost>.from(l.map((blogPost) => BlogPost.fromJson(blogPost)));
       return posts;
-    } else {throw Exception('No posts avaiable');}
+    } else {
+      throw Exception('No posts avaiable');
+    }
+  }
+
   }
 }
