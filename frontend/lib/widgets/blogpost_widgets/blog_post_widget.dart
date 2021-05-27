@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/models/blogpost.models/blog_post.dart';
 import 'package:frontend/models/user.dart';
 import 'package:frontend/providers/user_auth.dart';
+import 'package:frontend/services/blogpost_service.dart';
 import 'package:frontend/widgets/forms_widgets/update_blogpost.dart';
 import 'package:provider/provider.dart';
 
@@ -19,37 +20,39 @@ class SingleBlogPost extends StatefulWidget {
 }
 
 class _SingleBlogPostState extends State<SingleBlogPost> {
-
   void _openDeleteDialog() {
-    () {
-      showDialog(
-        context: context,
-        builder: (ctx) {
-          return AlertDialog(
-            title: Text('Delete?'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Cancel'),
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          title: Text('Delete?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.red,
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text(
-                  'Delete',
-                  textAlign: TextAlign.end,
-                ),
+              onPressed: () async {
+                await BlogPostService(context)
+                    .deleteBlogPost(widget.blogPost.id!);
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'Delete',
+                textAlign: TextAlign.end,
+                style: TextStyle(color: Colors.black),
               ),
-            ],
-          );
-        },
-      );
-    };
+            ),
+          ],
+        );
+      },
+    );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +65,6 @@ class _SingleBlogPostState extends State<SingleBlogPost> {
     return canEdit
         ? ExpansionTile(
             key: widget.key,
-     
             title: customTitle(),
             subtitle: customSubtitle(),
             trailing: canEdit
