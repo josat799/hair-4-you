@@ -10,6 +10,7 @@ export 'package:aqueduct/aqueduct.dart';
 export 'package:aqueduct/managed_auth.dart';
 
 export 'package:backend/models/post_models/blogpost.dart';
+export 'package:backend/models/post_models/pricepost.dart';
 export 'package:backend/models/booking_models/booking.dart';
 export 'package:backend/models/user_models/user.dart';
 export 'package:backend/models/relations/booking_customer.dart';
