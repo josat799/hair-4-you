@@ -27,12 +27,17 @@ class BlogPostService {
 
     if (response.statusCode == 200) {
       dynamic decodedBody = json.decode(response.body);
+
       Iterable<dynamic> l = decodedBody;
       List<BlogPost> posts =
           List<BlogPost>.from(l.map((blogPost) => BlogPost.fromJson(blogPost)));
       return posts;
+    } else if (response.statusCode == 404) {
+      throw Exception('Could not find the post');
+    } else if (response.statusCode == 401) {
+      throw Exception('You are not logged in!');
     } else {
-      throw Exception('No post available');
+      throw Exception('Something went wrong, try again later!');
     }
   }
 
@@ -56,8 +61,12 @@ class BlogPostService {
       List<BlogPost> posts =
           List<BlogPost>.from(l.map((blogPost) => BlogPost.fromJson(blogPost)));
       return posts;
+    } else if (response.statusCode == 404) {
+      throw Exception('Could not find the post');
+    } else if (response.statusCode == 401) {
+      throw Exception('You are not logged in!');
     } else {
-      throw Exception('No posts avaiable');
+      throw Exception('Something went wrong, try again later!');
     }
   }
 
@@ -80,8 +89,11 @@ class BlogPostService {
 
     if (response.statusCode == 200)
       return;
-    else
-      throw Exception('Something went wrong');
+    else if (response.statusCode == 401) {
+      throw Exception('You are not logged in!');
+    } else {
+      throw Exception('Something went wrong, try again later!');
+    }
   }
 
   Future<void> deleteBlogPost(int blogPostID) async {
@@ -99,6 +111,12 @@ class BlogPostService {
 
     if (response.statusCode == 200)
       return;
+    else if (response.statusCode == 401) {
+      throw Exception('You are not logged in!');
+    } else {
+      throw Exception('Something went wrong, try again later!');
+    }
+  }
 
   Future<void> addBlogPost(BlogPost blogPost) async {
     final String path = "/restricted/blogposts";
