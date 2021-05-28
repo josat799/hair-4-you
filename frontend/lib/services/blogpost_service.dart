@@ -99,8 +99,31 @@ class BlogPostService {
 
     if (response.statusCode == 200)
       return;
-    else
-      throw Exception(
-          'Something went wrong! Status Code: ${response.statusCode}');
+
+  Future<void> addBlogPost(BlogPost blogPost) async {
+    final String path = "/restricted/blogposts";
+
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ${context.read<UserAuth>().token}',
+      'Content-Type': 'application/json',
+    };
+
+    final body = jsonEncode(blogPost.toJson());
+
+    http.Response response = await http.post(
+        Uri.http(
+          "localhost:8888",
+          path,
+        ),
+        headers: headers,
+        body: body);
+
+    if (response.statusCode == 200)
+      return;
+    else if (response.statusCode == 401) {
+      throw Exception('You are not logged in!');
+    } else {
+      throw Exception('Something went wrong, try again later!');
+    }
   }
 }
