@@ -46,7 +46,7 @@ class _IndexScreenState extends State<IndexScreen> {
         ],
       ),
       body: Center(
-        child: BlogPostMultiple(),
+        child: BlogPostMultiple(onlyVisiable: true,),
       ),
     );
   }
