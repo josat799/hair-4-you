@@ -1,3 +1,3 @@
 cd frontend/
 
-flutter run -d chrome 
+flutter run -d chrome --web-port 8686
