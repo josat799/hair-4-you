@@ -64,9 +64,20 @@ class Hair4YouChannel extends ApplicationChannel {
         .link(() => BlogPostController(context));
 
     router
+        .route("/priceposts")
+        .link(() => Authorizer.basic(authServer))
+        .link(() => PricePostController(context));
+
+
+    router
         .route("/restricted/blogposts/[:id]")
         .link(() => Authorizer.bearer(authServer))
         .link(() => BlogPostController(context));
+
+    router
+        .route("/restricted/priceposts/[:id]")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => PricePostController(context));
 
     router
         .route("/example")
