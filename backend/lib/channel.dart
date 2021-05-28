@@ -46,6 +46,7 @@ class Hair4YouChannel extends ApplicationChannel {
   Controller get entryPoint {
     final router = Router();
 
+
     router
         .route("/register")
         .link(() => Authorizer.basic(authServer))
@@ -53,9 +54,21 @@ class Hair4YouChannel extends ApplicationChannel {
 
     router.route("/login").link(() => AuthController(authServer));
 
-    router.route('/google').link(() => Authorizer.basic(authServer))
-    .link(() => GoogleController(context));
+    router
+        .route('/google')
+        .link(() => Authorizer.basic(authServer))
+        .link(() => GoogleController(context));
 
+    router
+        .route("/blogposts")
+        .link(() => Authorizer.basic(authServer))
+        .link(() => BlogPostController(context));
+    
+    router
+        .route("/restricted/blogposts/[:id]")
+        .link(() => Authorizer.bearer(authServer))
+        .link(() => BlogPostController(context));
+    
     router
         .route("/example")
         .link(() => Authorizer.basic(authServer))

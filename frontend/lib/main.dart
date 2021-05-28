@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/providers/user_auth.dart';
+import 'package:frontend/screens/blog_post_screen.dart';
 import 'package:frontend/screens/bookings_screen.dart';
 import 'package:frontend/screens/index_screen.dart';
 import 'package:frontend/screens/unknow_screen.dart';
@@ -10,7 +11,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserAuth('com.hair4you.com')),
+        ChangeNotifierProvider(create: (_) => UserAuth('com.hair_for_you.web')),
       ],
       child: Hair4You(),
     ),
@@ -37,6 +38,9 @@ Route<dynamic> _routes(RouteSettings settings) {
       builder: (context) => BookingsScreen(),
       settings: settings,
     );
+  } else if (settings.name == BlogPostScreen.ROUTENAME) {
+    return MaterialPageRoute(
+        builder: (context) => BlogPostScreen(), settings: settings);
   } else {
     return MaterialPageRoute(
       builder: (context) => UnknowScreen(),

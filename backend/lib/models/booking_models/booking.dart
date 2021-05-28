@@ -1,4 +1,4 @@
-import 'package:models/models.dart';
+import 'package:backend/backend.dart';
 
 class ManagedBooking extends ManagedObject<Booking> implements Booking {}
 
@@ -58,17 +58,6 @@ class Booking {
     return <String>{startTime.toString(), startTime.add(duration).toString()};
   }
 
-  Booking.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        createdAt = json['createdAt'],
-        startTime = json['startTime'],
-        title = json['title'],
-        description = json['description'],
-        duration = json['duration'],
-        lastEdited = json['lastEditited'],
-        amountOfCustomers = json['amountOfCustomers'],
-        //hairDressers = json['hairDressers'],
-        bookingCustomer = json['customers'];
 
   Map<String, dynamic> toJson() {
     return {

@@ -1,5 +1,4 @@
-import 'package:aqueduct/managed_auth.dart';
-import 'package:models/models.dart';
+import 'package:backend/backend.dart';
 
 enum userType {
   customer,
@@ -34,6 +33,8 @@ class User extends ResourceOwnerTableDefinition {
   @Column(nullable: true)
   DateTime lastLoggedIn;
 
+  ManagedSet<ManagedBlogPost> posts;
+
   ManagedSet<ManagedBookingCustomer> bookingCustomer;
 
   ManagedSet<ManagedBookingHairdresser> bookingHairdresser;
@@ -50,16 +51,6 @@ class User extends ResourceOwnerTableDefinition {
     this.phoneNumber,
     this.role,
   });
-
-  User.fromJson(Map<String, dynamic> json)
-      : birthDate = json['birthDate'] ?? '',
-        createdAt = json['accountCreated'],
-        phoneNumber = json['phoneNumber'],
-        name = json['name'],
-        email = json['email'],
-        role = json['role'],
-        lastLoggedIn = json['lastLoggedIn'],
-        bookingCustomer = json['bookings'];
 
   Map<String, dynamic> toJson() {
     return {

@@ -24,18 +24,21 @@ class UserService {
         },
         body: encodedUser);
 
-    return response.statusCode == 200 ? User.fromJson(jsonDecode((response.body))): null;
+    return response.statusCode == 200
+        ? User.fromJson(jsonDecode((response.body)))
+        : null;
   }
 
-  Future<User> fetchUser({String? email}) async {
-    int? id = context.read<UserAuth>().id;
+  Future<User> fetchUser({String? email, int? id}) async {
     String path;
     Map<String, String> params = {};
-    if (id == null && email!.isNotEmpty) {
+    if (id == null && email == null) {
+      throw Error();
+    } else if (email == null) {
+      path = "/users/$id";
+    } else {
       path = "/users";
       params['email'] = email;
-    } else {
-      path = "/users/$id";
     }
 
     String token = context.read<UserAuth>().token;
@@ -44,9 +47,10 @@ class UserService {
         headers: {'Authorization': 'Bearer $token'});
 
     final decodedBody = jsonDecode(response.body);
-    User fetchedUser = decodedBody[0] == null
-        ? User.fromJson(decodedBody)
-        : User.fromJson(decodedBody[0]);
-    return fetchedUser;
+    if (decodedBody is List<dynamic>) {
+      return User.fromJson(decodedBody[0]);
+    } else {
+      return User.fromJson(decodedBody);
+    }
   }
 }

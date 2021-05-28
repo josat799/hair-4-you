@@ -1,4 +1,4 @@
-import 'package:models/models.dart';
+import 'package:backend/backend.dart';
 
 class ManagedBookingHairdresser extends ManagedObject<BookingHairdresser>
     implements BookingHairdresser {}
