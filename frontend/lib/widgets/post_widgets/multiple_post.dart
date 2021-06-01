@@ -4,9 +4,11 @@ import 'package:frontend/services/post_service.dart';
 import 'package:frontend/widgets/post_widgets/single_post.dart';
 
 class MultiplePosts<T extends Post> extends StatefulWidget {
-  bool? onlyVisables;
+  final bool? onlyVisables;
 
-  MultiplePosts({this.onlyVisables});
+  MultiplePosts({
+    this.onlyVisables,
+  });
 
   @override
   _MultiplePostsState<T> createState() => _MultiplePostsState<T>();
@@ -24,7 +26,9 @@ class _MultiplePostsState<T extends Post> extends State<MultiplePosts> {
   Stream<List<T>> _fetchPosts() async* {
     yield* Stream.periodic(
       Duration(seconds: 10),
-      (_) async => await PostService<T>(context).fetchPosts(),
+      (_) async => await PostService<T>(context).fetchPosts(
+        onlyVisiable: widget.onlyVisables,
+      ),
     ).asyncMap((event) async => await event);
   }
 
