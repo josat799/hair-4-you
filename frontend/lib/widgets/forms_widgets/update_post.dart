@@ -1,35 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/blogpost.models/blog_post.dart';
-import 'package:frontend/services/blogpost_service.dart';
+import 'package:frontend/models/blogpost.models/post.dart';
 
-class UpdateBlogPost extends StatefulWidget {
-  final BlogPost blogPost;
-  
+import 'package:frontend/services/post_service.dart';
 
-  UpdateBlogPost(this.blogPost);
+class UpdatePost<T extends Post> extends StatefulWidget {
+  final T post;
+
+  UpdatePost(this.post);
 
   @override
-  _UpdateBlogPostState createState() => _UpdateBlogPostState();
+  _UpdatePostState createState() => _UpdatePostState();
 }
 
-class _UpdateBlogPostState extends State<UpdateBlogPost> {
+class _UpdatePostState<T extends Post> extends State<UpdatePost> {
   late GlobalKey<FormState> _key;
 
   @override
   void initState() {
     _key = GlobalKey<FormState>();
-
     super.initState();
   }
 
   void _updateVisiable(bool? checked) {
-    setState(() {
-      widget.blogPost.visiable = checked!;
-    });
+    if (T == BlogPost) {
+      setState(() {
+        (widget.post as BlogPost).visiable = checked!;
+      });
+    }
   }
 
   Future<void> _sendUpdate() async {
-    await BlogPostService(context).updateBlogPost(blogPost: widget.blogPost);
+    await PostService<T>(context).updatePost(post: widget.post);
   }
 
   @override
@@ -41,27 +43,28 @@ class _UpdateBlogPostState extends State<UpdateBlogPost> {
         child: Column(
           children: [
             TextFormField(
-              initialValue: widget.blogPost.title,
+              initialValue: widget.post.title,
               decoration: InputDecoration(hintText: 'Title'),
-              onSaved: (title) => widget.blogPost.title = title,
+              onSaved: (title) => widget.post.title = title,
             ),
             TextFormField(
-              initialValue: widget.blogPost.description,
+              initialValue: widget.post.description,
               decoration: InputDecoration(hintText: 'Description'),
-              onSaved: (description) =>
-                  widget.blogPost.description = description,
+              onSaved: (description) => widget.post.description = description,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  width: 200,
-                  child: CheckboxListTile(
-                    value: widget.blogPost.visiable,
-                    onChanged: _updateVisiable,
-                    title: Text('Visiable'),
-                  ),
-                ),
+                T == BlogPost
+                    ? SizedBox(
+                        width: 200,
+                        child: CheckboxListTile(
+                          value: (widget.post as BlogPost).visiable,
+                          onChanged: _updateVisiable,
+                          title: Text('Visiable'),
+                        ),
+                      )
+                    : Container(),
                 ElevatedButton(
                     onPressed: () async {
                       _key.currentState!.save();
