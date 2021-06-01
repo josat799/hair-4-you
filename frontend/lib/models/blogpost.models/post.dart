@@ -14,4 +14,10 @@ abstract class Post {
     this.author,
     this.createdAt,
   );
+
+  Post.fromJson(Map<String, dynamic> json);
+
+  Map<String, dynamic> toJson() {
+    return {};
+  }
 }
