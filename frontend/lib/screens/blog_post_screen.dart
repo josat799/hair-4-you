@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/blogpost.models/blog_post.dart';
-import 'package:frontend/services/blogpost_service.dart';
-import 'package:frontend/widgets/blogpost_widgets/blog_post_multiple.dart';
+import 'package:frontend/services/post_service.dart';
 import 'package:frontend/widgets/forms_widgets/new_blog_post_form.dart';
 import 'package:frontend/widgets/login_widget.dart';
+import 'package:frontend/widgets/post_widgets/multiple_post.dart';
 
 class BlogPostScreen extends StatelessWidget {
   static const ROUTENAME = '/blogposts';
@@ -35,7 +35,7 @@ class BlogPostScreen extends StatelessWidget {
                 _key.currentState!.save();
 
                 try {
-                  await BlogPostService(context).addBlogPost(_blogPost);
+                  await PostService<BlogPost>(context).addPost(_blogPost);
                   Navigator.pop(context);
                 } on Exception catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -79,8 +79,8 @@ class BlogPostScreen extends StatelessWidget {
           Login(),
         ],
       ),
-      body: BlogPostMultiple(
-        onlyVisiable: false,
+      body: MultiplePosts<BlogPost>(
+        onlyVisables: false,
       ),
     );
   }
