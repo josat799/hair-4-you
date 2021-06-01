@@ -2,36 +2,48 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/models/blogpost.models/blog_post.dart';
+import 'package:frontend/models/blogpost.models/post.dart';
+import 'package:frontend/models/blogpost.models/price_post.dart';
 import 'package:frontend/providers/user_auth.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
-class BlogPostService {
+class PostService<T extends Post> {
   final BuildContext context;
 
-  BlogPostService(this.context);
+  PostService(this.context);
 
-  Future<List<BlogPost>> fetchBlogPosts({bool? onlyVisiable}) async {
-    const String path = "/blogposts";
-
+  Future<List<T>> fetchPosts({bool? onlyVisiable}) async {
+    String path = T == BlogPost ? "/blogposts" : "/priceposts";
     final String clientCredentials = const Base64Encoder()
         .convert("${context.read<UserAuth>().clientID}:".codeUnits);
 
     Map<String, String> headers = {'Authorization': 'Basic $clientCredentials'};
     Map<String, String> params = {'visiable': ""};
 
-    http.Response response = await http.get(
-        Uri.http("localhost:8888", path,
-            onlyVisiable != null && onlyVisiable ? params : null),
-        headers: headers);
+    http.Response response;
+
+    try {
+      response = await http.get(
+          Uri.http("localhost:8888", path,
+              onlyVisiable != null && onlyVisiable ? params : null),
+          headers: headers);
+    } on Exception catch (e) {
+      return [];
+    }
 
     if (response.statusCode == 200) {
       dynamic decodedBody = json.decode(response.body);
 
       Iterable<dynamic> l = decodedBody;
-      List<BlogPost> posts =
-          List<BlogPost>.from(l.map((blogPost) => BlogPost.fromJson(blogPost)));
-      return posts;
+      if (T == BlogPost) {
+        print(List<T>.from(l.map((post) => BlogPost.fromJson(post))));
+        return List<T>.from(l.map((post) => BlogPost.fromJson(post)));
+      } else if (T == PricePost) {
+        return List<T>.from(l.map((post) => PricePost.fromJson(post)));
+      } else {
+        return [];
+      }
     } else if (response.statusCode == 404) {
       throw Exception('Could not find the post');
     } else if (response.statusCode == 401) {
@@ -41,8 +53,8 @@ class BlogPostService {
     }
   }
 
-  Future<List<BlogPost>> fetchBlogPostBYID({required int blogPostID}) async {
-    final String path = "/restricted/blogposts/$blogPostID";
+  Future<List<T>> fetchPostBYID({required int postID}) async {
+    final String path = "/restricted/blogposts/$postID";
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${context.read<UserAuth>().token}'
@@ -58,8 +70,13 @@ class BlogPostService {
       dynamic decodedBody = json.decode(response.body);
 
       Iterable<dynamic> l = decodedBody;
-      List<BlogPost> posts =
-          List<BlogPost>.from(l.map((blogPost) => BlogPost.fromJson(blogPost)));
+      List<T> posts = List<T>.from(l.map((post) {
+        if (T == BlogPost) {
+          return BlogPost.fromJson(post);
+        } else {
+          return PricePost.fromJson(post);
+        }
+      },),);
       return posts;
     } else if (response.statusCode == 404) {
       throw Exception('Could not find the post');
@@ -70,14 +87,14 @@ class BlogPostService {
     }
   }
 
-  Future<void> updateBlogPost({required BlogPost blogPost}) async {
-    final String path = "/restricted/blogposts/${blogPost.id}";
+  Future<void> updatePost({required Post post}) async {
+    final String path = "/restricted/blogposts/${post.id}";
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${context.read<UserAuth>().token}',
       'Content-Type': 'application/json',
     };
-    final data = jsonEncode(blogPost.toJson());
+    final data = jsonEncode(post.toJson());
     http.Response response = await http.put(
       Uri.http(
         "localhost:8888",
@@ -96,8 +113,8 @@ class BlogPostService {
     }
   }
 
-  Future<void> deleteBlogPost(int blogPostID) async {
-    final String path = "/restricted/blogposts/$blogPostID";
+  Future<void> deletePost(int postID) async {
+    final String path = "/restricted/blogposts/$postID";
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${context.read<UserAuth>().token}'
@@ -118,7 +135,7 @@ class BlogPostService {
     }
   }
 
-  Future<void> addBlogPost(BlogPost blogPost) async {
+  Future<void> addPost(Post post) async {
     final String path = "/restricted/blogposts";
 
     final Map<String, String> headers = {
@@ -126,7 +143,7 @@ class BlogPostService {
       'Content-Type': 'application/json',
     };
 
-    final body = jsonEncode(blogPost.toJson());
+    final body = jsonEncode(post.toJson());
 
     http.Response response = await http.post(
         Uri.http(
