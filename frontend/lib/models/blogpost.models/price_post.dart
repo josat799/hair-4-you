@@ -18,4 +18,24 @@ class PricePost extends Post {
           author,
           createdAt,
         );
+
+  PricePost.fromJson(Map<String, dynamic> json)
+      : this.price = json['price'],
+        super(
+          json['id'],
+          json['title'],
+          json['description'],
+          User.fromJson(json['author']),
+          DateTime.parse(json['createdAt']),
+        );
+
+  Map<String, dynamic> toJson() {
+    return {
+      'price': price,
+      'id': id,
+      'title': title,
+      'description': description,
+      'createdAt': createdAt.toString(),
+    };
+  }
 }
