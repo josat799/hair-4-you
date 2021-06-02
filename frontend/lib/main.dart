@@ -5,7 +5,10 @@ import 'package:frontend/screens/index_screen.dart';
 import 'package:frontend/screens/post_screen.dart';
 import 'package:frontend/screens/unknow_screen.dart';
 import 'package:frontend/screens/user_profile_screen.dart';
+import 'package:frontend/services/OAuth.dart';
+import 'package:frontend/services/user_service.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(
@@ -50,8 +53,32 @@ Route<dynamic> _routes(RouteSettings settings) {
 }
 
 class Hair4You extends StatelessWidget {
+  Future<void> checkToken(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+
+    if (token != null) {
+      bool authorized = await OAuth(context).verifyToken(token);
+      if (authorized) {
+        context.read<UserAuth>().token = token;
+        context.read<UserAuth>().id = prefs.getInt('user_id');
+        try {
+          context.read<UserAuth>().user = await UserService(context).fetchUser(
+            id: prefs.getInt('user_id'),
+          );
+          context.read<UserAuth>().userState = UserState.loggedIn;
+        } on Exception catch (e) {
+          // TODO
+        }
+      }
+    } else {
+      context.read<UserAuth>().userState = UserState.LoggedOut;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    checkToken(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Hair for you',
