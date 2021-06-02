@@ -18,22 +18,7 @@ class IndexScreen extends StatefulWidget {
 class _IndexScreenState extends State<IndexScreen> {
   @override
   void initState() {
-    checkToken();
     super.initState();
-  }
-
-  Future<void> checkToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token') ?? '';
-    print(token);
-    if (token!.isNotEmpty) {
-      context.read<UserAuth>().token = token;
-      context.read<UserAuth>().id = prefs.getInt('user_id');
-      context.read<UserAuth>().user = await UserService(context).fetchUser(
-        id: prefs.getInt('user_id'),
-      );
-      context.read<UserAuth>().userState = UserState.loggedIn;
-    }
   }
 
   @override
