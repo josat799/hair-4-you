@@ -47,7 +47,9 @@ class _IndexScreenState extends State<IndexScreen> {
         ],
       ),
       body: Center(
-        child: MultiplePosts<PricePost>(),
+        child: MultiplePosts<PricePost>(
+          updateFrequency: 10,
+        ),
       ),
     );
   }
