@@ -22,5 +22,6 @@ export 'package:backend/controllers/register_controller.dart';
 export 'package:backend/controllers/google_controller.dart';
 export 'package:backend/controllers/blogpost_controller.dart';
 export 'package:backend/controllers/pricepost_controller.dart';
+export 'package:backend/controllers/token_controller.dart';
 
 export 'channel.dart';

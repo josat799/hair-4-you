@@ -72,10 +72,25 @@ class OAuth {
 
   Future<void> loginWithGoogle() async {}
 
+  Future<bool> verifyToken(String token) async {
+    final String clientID = "${context.read<UserAuth>().clientID}";
+    final String clientCredentials =
+        const Base64Encoder().convert("$clientID:".codeUnits);
+    return (await http.get(
+          Uri.http("localhost:8888", "/token/$token"),
+          headers: {
+            "Authorization": "Basic $clientCredentials",
+          },
+        ))
+            .statusCode ==
+        200;
+  }
+
   Future<void> login(String username, String password) async {
     context.read<UserAuth>().userState = UserState.loggingIn;
     final Map<String, dynamic> response =
         await _requestToken(username, password);
+
     if (response['statusCode'] == 200) {
       context.read<UserAuth>().token =
           response['message']['access_token'].toString();
@@ -87,13 +102,14 @@ class OAuth {
       prefs.setString('token', response['message']['access_token']);
       prefs.setString(
           'token_expires', response['message']['expires_in'].toString());
-
-      final User user = await UserService(context).fetchUser(email: username);
-      context.read<UserAuth>().id = user.id;
-      context.read<UserAuth>().user = user;
-      prefs.setInt('user_id', user.id!);
-      context.read<UserAuth>().userState = UserState.loggedIn;
-      return;
+      final User? user = await UserService(context).fetchUser(email: username);
+      if (user != null) {
+        context.read<UserAuth>().id = user.id;
+        context.read<UserAuth>().user = user;
+        prefs.setInt('user_id', user.id!);
+        context.read<UserAuth>().userState = UserState.loggedIn;
+        return;
+      }
     }
     context.read<UserAuth>().userState = UserState.LoggedOut;
   }
