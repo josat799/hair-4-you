@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/providers/user_auth.dart';
-import 'package:frontend/screens/blog_post_screen.dart';
 import 'package:frontend/screens/bookings_screen.dart';
 import 'package:frontend/screens/index_screen.dart';
+import 'package:frontend/screens/post_screen.dart';
 import 'package:frontend/screens/unknow_screen.dart';
 import 'package:frontend/screens/user_profile_screen.dart';
 import 'package:provider/provider.dart';
@@ -38,9 +38,9 @@ Route<dynamic> _routes(RouteSettings settings) {
       builder: (context) => BookingsScreen(),
       settings: settings,
     );
-  } else if (settings.name == BlogPostScreen.ROUTENAME) {
+  } else if (settings.name == PostScreen.ROUTENAME) {
     return MaterialPageRoute(
-        builder: (context) => BlogPostScreen(), settings: settings);
+        builder: (context) => PostScreen(), settings: settings);
   } else {
     return MaterialPageRoute(
       builder: (context) => UnknowScreen(),
