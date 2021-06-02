@@ -4,12 +4,12 @@ import 'package:frontend/models/blogpost.models/post.dart';
 import 'package:frontend/models/blogpost.models/price_post.dart';
 import 'package:frontend/models/user.dart';
 import 'package:frontend/providers/user_auth.dart';
+import 'package:frontend/services/post_service.dart';
 import 'package:frontend/widgets/forms_widgets/update_post.dart';
 import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
 class SinglePost<T extends Post> extends StatefulWidget {
-  T post;
+  final T post;
   final EdgeInsetsGeometry? padding;
 
   final Key? key;
@@ -25,16 +25,15 @@ class SinglePost<T extends Post> extends StatefulWidget {
 }
 
 class _SinglePostState<T extends Post> extends State<SinglePost> {
-  late bool _canEdit;
-
   @override
   void initState() {
-    User? loggedInUser = context.read<UserAuth>().user;
-
-    _canEdit =
-        (loggedInUser != null && loggedInUser.identical(widget.post.author!));
-
     super.initState();
+  }
+
+  bool _canEdit() {
+    User? loggedInUser = context.watch<UserAuth>().user;
+    return (loggedInUser != null &&
+        loggedInUser.identical(widget.post.author!));
   }
 
   void _openDeleteDialog() {
@@ -55,8 +54,7 @@ class _SinglePostState<T extends Post> extends State<SinglePost> {
                 backgroundColor: Colors.red,
               ),
               onPressed: () async {
-                //await BlogPostService(context)
-                //     .deleteBlogPost(widget.blogPost.id!);
+                await PostService<T>(context).deletePost(widget.post.id!);
                 Navigator.pop(context);
               },
               child: const Text(
@@ -94,7 +92,7 @@ class _SinglePostState<T extends Post> extends State<SinglePost> {
             border: Border.all(),
           ),
         ),
-        trailing: _canEdit
+        trailing: _canEdit()
             ? Container(
                 width: 100,
                 child: Row(
@@ -111,7 +109,7 @@ class _SinglePostState<T extends Post> extends State<SinglePost> {
             : null,
         maintainState: true,
         children: [
-          UpdatePost(widget.post),
+          UpdatePost<T>(widget.post as T),
         ],
       ),
     );
@@ -158,7 +156,6 @@ class _SinglePostState<T extends Post> extends State<SinglePost> {
 
   @override
   Widget build(BuildContext context) {
-    print('Building Post');
-    return _canEdit ? _editableTile() : _nonEditableTile();
+    return _canEdit() ? _editableTile() : _nonEditableTile();
   }
 }
