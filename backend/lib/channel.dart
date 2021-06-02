@@ -54,6 +54,11 @@ class Hair4YouChannel extends ApplicationChannel {
     router.route("/login").link(() => AuthController(authServer));
 
     router
+        .route("/token/[:token]")
+        .link(() => Authorizer.basic(authServer))
+        .link(() => TokenController(context, authServer));
+
+    router
         .route('/google')
         .link(() => Authorizer.basic(authServer))
         .link(() => GoogleController(context));
@@ -68,7 +73,6 @@ class Hair4YouChannel extends ApplicationChannel {
         .link(() => Authorizer.basic(authServer))
         .link(() => PricePostController(context));
 
-
     router
         .route("/restricted/blogposts/[:id]")
         .link(() => Authorizer.bearer(authServer))
@@ -82,7 +86,7 @@ class Hair4YouChannel extends ApplicationChannel {
     router
         .route("/example")
         .link(() => Authorizer.basic(authServer))
-        .linkFunction((request) async {
+        .linkFunction((request) {
       return Response.ok({});
     });
 
