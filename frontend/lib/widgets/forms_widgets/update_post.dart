@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/blogpost.models/blog_post.dart';
 import 'package:frontend/models/blogpost.models/post.dart';
+import 'package:frontend/models/blogpost.models/price_post.dart';
 
 import 'package:frontend/services/post_service.dart';
 
@@ -10,7 +11,7 @@ class UpdatePost<T extends Post> extends StatefulWidget {
   UpdatePost(this.post);
 
   @override
-  _UpdatePostState createState() => _UpdatePostState();
+  _UpdatePostState<T> createState() => _UpdatePostState<T>();
 }
 
 class _UpdatePostState<T extends Post> extends State<UpdatePost> {
@@ -52,18 +53,38 @@ class _UpdatePostState<T extends Post> extends State<UpdatePost> {
               decoration: InputDecoration(hintText: 'Description'),
               onSaved: (description) => widget.post.description = description,
             ),
+            T == PricePost
+                ? TextFormField(
+                    initialValue: (widget.post as PricePost).price.toString(),
+                    decoration: InputDecoration(hintText: 'Price'),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    onSaved: (price) {
+                      (widget.post as PricePost).price = double.parse(price!);
+                    },
+                    validator: (price) {
+                      if (price == null && double.tryParse(price!) == null) {
+                        return 'Cannot be empty';
+                      } else if (double.parse(price) <= 0) {
+                        return 'Must be greater than 0';
+                      }
+                    },
+                  )
+                : Container(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 T == BlogPost
                     ? SizedBox(
                         width: 200,
-                        child: CheckboxListTile(
-                          value: (widget.post as BlogPost).visiable,
-                          onChanged: _updateVisiable,
-                          title: Text('Visiable'),
-                        ),
-                      )
+                        child: SwitchListTile(
+                            title: Text("Should it be visiable?"),
+                            value: (widget.post as BlogPost).visiable,
+                            onChanged: (value) {
+                              print(value);
+                              setState(() {
+                                (widget.post as BlogPost).visiable = value;
+                              });
+                            }))
                     : Container(),
                 ElevatedButton(
                     onPressed: () async {
