@@ -37,7 +37,6 @@ class PostService<T extends Post> {
 
       Iterable<dynamic> l = decodedBody;
       if (T == BlogPost) {
-        print(List<T>.from(l.map((post) => BlogPost.fromJson(post))));
         return List<T>.from(l.map((post) => BlogPost.fromJson(post)));
       } else if (T == PricePost) {
         return List<T>.from(l.map((post) => PricePost.fromJson(post)));
@@ -54,7 +53,9 @@ class PostService<T extends Post> {
   }
 
   Future<List<T>> fetchPostBYID({required int postID}) async {
-    final String path = "/restricted/blogposts/$postID";
+    String path = "/restricted" +
+        (T == BlogPost ? "/blogposts" : "/priceposts") +
+        "/${postID}";
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${context.read<UserAuth>().token}'
@@ -70,13 +71,17 @@ class PostService<T extends Post> {
       dynamic decodedBody = json.decode(response.body);
 
       Iterable<dynamic> l = decodedBody;
-      List<T> posts = List<T>.from(l.map((post) {
-        if (T == BlogPost) {
-          return BlogPost.fromJson(post);
-        } else {
-          return PricePost.fromJson(post);
-        }
-      },),);
+      List<T> posts = List<T>.from(
+        l.map(
+          (post) {
+            if (T == BlogPost) {
+              return BlogPost.fromJson(post);
+            } else {
+              return PricePost.fromJson(post);
+            }
+          },
+        ),
+      );
       return posts;
     } else if (response.statusCode == 404) {
       throw Exception('Could not find the post');
@@ -88,7 +93,9 @@ class PostService<T extends Post> {
   }
 
   Future<void> updatePost({required Post post}) async {
-    final String path = "/restricted/blogposts/${post.id}";
+    String path = "/restricted" +
+        (T == BlogPost ? "/blogposts" : "/priceposts") +
+        "/${post.id}";
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${context.read<UserAuth>().token}',
@@ -114,7 +121,9 @@ class PostService<T extends Post> {
   }
 
   Future<void> deletePost(int postID) async {
-    final String path = "/restricted/blogposts/$postID";
+    String path = "/restricted" +
+        (T == BlogPost ? "/blogposts" : "/priceposts") +
+        "/${postID}";
 
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${context.read<UserAuth>().token}'
@@ -136,14 +145,17 @@ class PostService<T extends Post> {
   }
 
   Future<void> addPost(Post post) async {
-    final String path = "/restricted/blogposts";
-
+    String path =
+        "/restricted" + (T == BlogPost ? "/blogposts" : "/priceposts");
+    print(path);
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${context.read<UserAuth>().token}',
       'Content-Type': 'application/json',
     };
 
     final body = jsonEncode(post.toJson());
+
+    print(body);
 
     http.Response response = await http.post(
         Uri.http(
