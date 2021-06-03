@@ -9,8 +9,8 @@ class BookingCustomer {
   int id;
 
   @Relate(#bookingCustomer)
-  ManagedBooking bookings;
+  ManagedBooking booking;
 
   @Relate(#bookingCustomer)
-  ManagedUser users;
+  ManagedUser customer;
 }
