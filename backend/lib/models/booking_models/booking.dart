@@ -1,6 +1,11 @@
 import 'package:backend/backend.dart';
 
-class ManagedBooking extends ManagedObject<Booking> implements Booking {}
+class ManagedBooking extends ManagedObject<Booking> implements Booking {
+
+  bool canAddBooking() {
+    return amountOfCustomers > bookedAmountOfCustomers;
+  }
+}
 
 @Table(name: 'Bookings')
 class Booking {
@@ -22,18 +27,18 @@ class Booking {
   @Column(nullable: false)
   DateTime startTime;
 
+  @Column(
+    nullable: true,
+    databaseType: ManagedPropertyType.integer,
+  )
+  int bookedAmountOfCustomers;
+
   @Column(nullable: false, databaseType: ManagedPropertyType.integer)
   Duration duration;
-
-  // @Column(nullable: true)
-  // List<User> hairDressers = [];
 
   ManagedSet<ManagedBookingCustomer> bookingCustomer;
 
   ManagedSet<ManagedBookingHairdresser> bookingHairdresser;
-
-  //@Column(nullable: true)
-  //List<User> customers = [];
 
   @Column(nullable: true)
   int amountOfCustomers;
@@ -47,17 +52,12 @@ class Booking {
     this.lastEdited,
     this.description = 'Missing',
     this.amountOfCustomers = 0,
-    List<User> hairDressers,
-    List<User> customers,
-  }) {
-    hairDressers = [];
-    customers = [];
-  }
+    this.bookedAmountOfCustomers = 0,
+  });
 
   Set<String> getDuration() {
     return <String>{startTime.toString(), startTime.add(duration).toString()};
   }
-
 
   Map<String, dynamic> toJson() {
     return {

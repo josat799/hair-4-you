@@ -9,8 +9,8 @@ class BookingHairdresser {
   int id;
 
   @Relate(#bookingHairdresser)
-  ManagedUser hairDressers;
+  ManagedUser hairDresser;
 
   @Relate(#bookingHairdresser)
-  ManagedBooking bookings;
+  ManagedBooking booking;
 }
