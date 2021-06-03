@@ -20,7 +20,19 @@ class BookingController extends ResourceController {
 
   @Operation.get()
   Future<Response> getBooking() async {
-    final query = Query<ManagedBooking>(context);
+    final query = Query<ManagedBooking>(context)
+      ..join(set: (booking) => booking.bookingCustomer)
+          .join<ManagedUser>(
+              object: (bookingCustomer) => bookingCustomer.customer)
+          .returningProperties((customer) => [
+                customer.name,
+              ])
+      ..join(set: (booking) => booking.bookingHairdresser)
+          .join<ManagedUser>(
+              object: (bookingHairDresser) => bookingHairDresser.hairDresser)
+          .returningProperties((hairdresser) => [
+                hairdresser.name,
+              ]);
     return Response.ok(await query.fetch());
   }
 
