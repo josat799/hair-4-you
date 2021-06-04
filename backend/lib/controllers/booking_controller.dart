@@ -8,7 +8,21 @@ class BookingController extends ResourceController {
   @Operation.get('id')
   Future<Response> getBookingByID(@Bind.path('id') int id) async {
     final query = Query<ManagedBooking>(context)
-      ..where((booking) => booking.id).equalTo(id);
+      ..where((booking) => booking.id).equalTo(id)
+      ..join(set: (booking) => booking.bookingCustomer)
+          .join<ManagedUser>(
+              object: (bookingCustomer) => bookingCustomer.customer)
+          .returningProperties((customer) => [
+                customer.name,
+                customer.email,
+              ])
+      ..join(set: (booking) => booking.bookingHairdresser)
+          .join<ManagedUser>(
+              object: (bookingHairDresser) => bookingHairDresser.hairDresser)
+          .returningProperties((hairdresser) => [
+                hairdresser.name,
+                hairdresser.email,
+              ]);
 
     final booking = await query.fetchOne();
 
@@ -26,12 +40,14 @@ class BookingController extends ResourceController {
               object: (bookingCustomer) => bookingCustomer.customer)
           .returningProperties((customer) => [
                 customer.name,
+                customer.email,
               ])
       ..join(set: (booking) => booking.bookingHairdresser)
           .join<ManagedUser>(
               object: (bookingHairDresser) => bookingHairDresser.hairDresser)
           .returningProperties((hairdresser) => [
                 hairdresser.name,
+                hairdresser.email,
               ]);
     return Response.ok(await query.fetch());
   }
@@ -48,6 +64,7 @@ class BookingController extends ResourceController {
     @Bind.path('id') int id,
     @Bind.body(ignore: ["id"]) ManagedBooking _booking,
   ) async {
+    
     final bookingQuery = Query<ManagedBooking>(context)
       ..where((booking) => booking.id).equalTo(id);
 
@@ -63,7 +80,7 @@ class BookingController extends ResourceController {
           body: {'message': 'You must be a customer!'},
         );
       }
-      if (!_booking.canAddBooking()) {
+      if (!booking.canAddBooking()) {
         return Response.conflict(
           body: {'message': 'The amount of customers are full!'},
         );
@@ -77,7 +94,7 @@ class BookingController extends ResourceController {
       final relationQuery = Query<ManagedBookingCustomer>(context)
         ..values = bookingCustomerRelation;
 
-      bookingQuery.values.bookedAmountOfCustomers++;
+      booking.bookedAmountOfCustomers++;
 
       await relationQuery.insert();
     } else if (request.path.segments.contains('hairdresser')) {
