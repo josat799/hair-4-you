@@ -83,9 +83,7 @@ class _LoginState extends State<Login> {
                 Radius.circular(8.0),
               ),
             ),
-            content: SizedBox(
-              height: 400,
-              width: double.infinity,
+            content: Container(
               child: LoginMenu(),
             ),
           );
