@@ -12,10 +12,9 @@ class UserProfileScreen extends StatelessWidget {
 
   UserProfileScreen(this._id);
 
-  Future<User> _getUser(BuildContext context) async {
+  Future<User?> _getUser(BuildContext context) async {
     if (this._id == context.read<UserAuth>().id) {
-      return await Future<User>(
-          () => context.read<UserAuth>().user!);
+      return await Future<User>(() => context.read<UserAuth>().user!);
     }
     return await UserService(context).fetchUser();
   }
@@ -27,7 +26,7 @@ class UserProfileScreen extends StatelessWidget {
       body: FutureBuilder<User?>(
         future: _getUser(context),
         builder: (context, snapshot) => Container(
-          child: snapshot.data == null
+          child: !snapshot.hasData
               ? CircularProgressIndicator()
               : Center(
                   child: Profile(snapshot.data!),
@@ -37,4 +36,3 @@ class UserProfileScreen extends StatelessWidget {
     );
   }
 }
-
