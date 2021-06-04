@@ -52,7 +52,7 @@ class PostService<T extends Post> {
     }
   }
 
-  Future<List<T>> fetchPostBYID({required int postID}) async {
+  Future<Post> fetchPostBYID({required int postID}) async {
     String path = "/restricted" +
         (T == BlogPost ? "/blogposts" : "/priceposts") +
         "/${postID}";
@@ -70,19 +70,12 @@ class PostService<T extends Post> {
     if (response.statusCode == 200) {
       dynamic decodedBody = json.decode(response.body);
 
-      Iterable<dynamic> l = decodedBody;
-      List<T> posts = List<T>.from(
-        l.map(
-          (post) {
-            if (T == BlogPost) {
-              return BlogPost.fromJson(post);
-            } else {
-              return PricePost.fromJson(post);
-            }
-          },
-        ),
-      );
-      return posts;
+      if (T == BlogPost) {
+        return BlogPost.fromJson(decodedBody);
+      } else {
+        return PricePost.fromJson(decodedBody);
+      }
+
     } else if (response.statusCode == 404) {
       throw Exception('Could not find the post');
     } else if (response.statusCode == 401) {
