@@ -83,8 +83,8 @@ class Hair4You extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Hair for you',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        accentColor: Colors.yellowAccent,
+        primarySwatch: Colors.deepOrange,
+        accentColor: Colors.green,
       ),
       onGenerateRoute: (settings) => _routes(settings),
     );
