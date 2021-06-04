@@ -101,7 +101,11 @@ class BookingService {
       var body = jsonEncode(booking.toJson());
 
       response = await http.put(Uri.http("localhost:8888", path),
-          headers: {'Authorization': 'Bearer $token'}, body: body);
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+          body: body);
     } on Exception catch (e) {
       print(e);
       return;
@@ -111,6 +115,8 @@ class BookingService {
       throw Exception('Could not find the booking');
     } else if (response.statusCode == 401) {
       throw Exception('You are not logged in!');
+    } else {
+      return;
     }
   }
 
@@ -122,7 +128,11 @@ class BookingService {
 
     try {
       response = await http.post(Uri.http("localhost:8888", '/bookings'),
-          headers: {'Authorization': 'Bearer $token'}, body: body);
+          headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          },
+          body: body);
     } on Exception catch (e) {
       return;
     }
