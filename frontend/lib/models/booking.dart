@@ -77,9 +77,9 @@ class Booking extends Event {
     return {
       'id': id,
       'title': title,
-      'startTime': startTime,
+      'startTime': startTime.toString(),
       'description': description,
-      'duration': duration.toString(),
+      'duration': duration!.inMinutes.toInt(),
       'amountOfCustomers': amountOfCustomers,
     };
   }
