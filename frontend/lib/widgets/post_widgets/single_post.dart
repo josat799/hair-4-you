@@ -33,7 +33,8 @@ class _SinglePostState<T extends Post> extends State<SinglePost> {
   bool _canEdit() {
     User? loggedInUser = context.watch<UserAuth>().user;
     return (loggedInUser != null &&
-        loggedInUser.identical(widget.post.author!));
+        (loggedInUser.identical(widget.post.author!) ||
+            loggedInUser.role != Role.customer));
   }
 
   void _openDeleteDialog() {
