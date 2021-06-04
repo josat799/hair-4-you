@@ -3,6 +3,7 @@ import 'package:frontend/models/blogpost.models/blog_post.dart';
 import 'package:frontend/models/blogpost.models/post.dart';
 import 'package:frontend/models/blogpost.models/price_post.dart';
 import 'package:frontend/services/post_service.dart';
+import 'package:frontend/widgets/custom_app_bar.dart';
 import 'package:frontend/widgets/forms_widgets/new_post_form.dart';
 import 'package:frontend/widgets/login_widget.dart';
 import 'package:frontend/widgets/post_widgets/multiple_post.dart';
@@ -47,12 +48,7 @@ class PostScreen extends StatelessWidget {
         ),
         tooltip: 'Add new blog post',
       ),
-      appBar: AppBar(
-        title: Text('All Posts'),
-        actions: [
-          Login(),
-        ],
-      ),
+      appBar: CustomAppBar.APPBAR(context),
       body: ListView(
         children: [
           Align(
