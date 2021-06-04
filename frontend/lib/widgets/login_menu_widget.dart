@@ -55,11 +55,11 @@ class _LoginMenuState extends State<LoginMenu> {
 
   @override
   Widget build(BuildContext context) {
-    print(watchState);
     return SizedBox.expand(
       child: watchState == UserState.loggingIn
           ? CircularProgressIndicator()
           : Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text('Welcome'),
                 _askForCredentials(),
@@ -81,7 +81,7 @@ class _LoginMenuState extends State<LoginMenu> {
                                 context.read<UserAuth>().userState =
                                     UserState.register;
                               },
-                              child: Text('Sign Up')),
+                              child: Text('Sign Up'),),
                         ],
                       ),
                 InkWell(
@@ -104,19 +104,6 @@ class _LoginMenuState extends State<LoginMenu> {
                     await GoogleService(context).login();
                     Navigator.pop(context);
                   },
-                ),
-                Spacer(),
-                ElevatedButton(
-                  onPressed: () async {
-                    await _signIn(
-                      {
-                        'email': 'josef.atoui@live.se',
-                        'password': '1234',
-                      },
-                    );
-                    Navigator.pop(context);
-                  },
-                  child: Text('SuperLogin'),
                 ),
               ],
             ),
