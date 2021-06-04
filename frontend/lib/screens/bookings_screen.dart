@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/models/booking.dart';
 import 'package:frontend/widgets/booking_widgets/selectable_calendar.dart';
 import 'package:frontend/widgets/booking_widgets/single_booking.dart';
-import 'package:frontend/widgets/login_widget.dart';
+import 'package:frontend/widgets/custom_app_bar.dart';
 
 class BookingsScreen extends StatefulWidget {
   static const ROUTENAME = "/bookings";
@@ -29,15 +29,8 @@ class _BookingsScreenState extends State<BookingsScreen> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData _mediaQueryData = MediaQuery.of(context);
-    print(_mediaQueryData.size.width);
     return Scaffold(
-      appBar: AppBar(
-        leading: Container(),
-        title: Text('Hair for You'),
-        actions: [
-          Login(),
-        ],
-      ),
+      appBar: CustomAppBar.APPBAR(context),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

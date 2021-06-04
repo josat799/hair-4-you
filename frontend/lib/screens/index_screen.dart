@@ -1,13 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:frontend/models/blogpost.models/blog_post.dart';
 import 'package:frontend/models/blogpost.models/price_post.dart';
-import 'package:frontend/providers/user_auth.dart';
-import 'package:frontend/services/user_service.dart';
+import 'package:frontend/widgets/custom_app_bar.dart';
 import 'package:frontend/widgets/post_widgets/multiple_post.dart';
-import 'package:provider/provider.dart';
-import 'package:frontend/widgets/login_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class IndexScreen extends StatefulWidget {
   static const ROUTENAME = '/';
@@ -24,17 +19,47 @@ class _IndexScreenState extends State<IndexScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Container(),
-        title: Text('Hair for You'),
-        actions: [
-          Login(),
+      appBar: CustomAppBar.APPBAR(context),
+      body: GridView.count(
+        shrinkWrap: true,
+        crossAxisCount: 2,
+        children: [
+          Center(
+            child: Card(
+              elevation: 8,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Messages'),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    child: MultiplePosts<BlogPost>(
+                      updateFrequency: 10,
+                      onlyVisables: true,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Center(
+            child: Card(
+              elevation: 8,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Prices'),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    child: MultiplePosts<PricePost>(
+                      updateFrequency: 10,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
-      ),
-      body: Center(
-        child: MultiplePosts<PricePost>(
-          updateFrequency: 10,
-        ),
       ),
     );
   }
