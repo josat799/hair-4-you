@@ -29,30 +29,12 @@ class CustomAppBar {
         actions: [
           ElevatedButton(
             onPressed: () {
-              if (context.read<UserAuth>().token != null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    duration: Duration(seconds: 5),
-                    content: Text('You are not signed in!'),
-                  ),
-                );
-                return;
-              }
               Navigator.of(context).pushNamed(BookingsScreen.ROUTENAME);
             },
             child: Text('Bookings'),
           ),
           ElevatedButton(
             onPressed: () {
-              if (context.read<UserAuth>().token != null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    duration: Duration(seconds: 5),
-                    content: Text('You are not signed in!'),
-                  ),
-                );
-                return;
-              }
               Navigator.of(context).pushNamed(PostScreen.ROUTENAME);
             },
             child: Text('Posts'),
