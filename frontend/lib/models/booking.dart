@@ -1,6 +1,7 @@
+import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:frontend/models/user.dart';
 
-class Booking {
+class Booking extends Event {
   int? id;
   DateTime? createdAt;
   String? title;
@@ -23,16 +24,24 @@ class Booking {
     this.description = 'Missing',
     this.amountOfCustomers = 0,
     this.bookedAmountOfCustomers = 0,
-  });
+  }) : super(
+          date: DateTime(
+            startTime!.year,
+            startTime.month,
+            startTime.day,
+          ),
+        );
 
   Booking.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         title = json['title'],
         description = json['description'],
         createdAt = DateTime.parse(json['createdAt']),
-        lastEdited = DateTime.parse(json['lastEdited']),
+        lastEdited = json['lastEdited'] == null
+            ? null
+            : DateTime.parse(json['lastEdited']),
         startTime = DateTime.parse(json['startTime']),
-        duration = Duration(minutes: json['duration']),
+        duration = Duration(minutes: json['duration'] ?? null),
         amountOfCustomers = json['amountOfCustomers'],
         bookedAmountOfCustomers = json['bookedAmountOfCustomers'],
         customers = List<User>.from(
@@ -56,6 +65,12 @@ class Booking {
                 },
               )
               .toList(),
+        ),
+        super(
+          date: DateTime(
+              DateTime.parse(json['startTime']).year,
+              DateTime.parse(json['startTime']).month,
+              DateTime.parse(json['startTime']).day),
         );
 
   Map<String, dynamic> toJson() {
