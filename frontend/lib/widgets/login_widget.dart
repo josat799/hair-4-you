@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/providers/user_auth.dart';
+import 'package:frontend/screens/user_profile_screen.dart';
 import 'package:frontend/services/OAuth.dart';
 import 'package:frontend/services/google_service.dart';
 import 'package:frontend/widgets/login_menu_widget.dart';
@@ -14,7 +15,6 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
-    print(context.read<UserAuth>().userState);
     return ElevatedButton(
       onPressed: () {
         if (context.read<UserAuth>().userState == UserState.loggedIn) {
@@ -25,7 +25,7 @@ class _LoginState extends State<Login> {
       },
       child: Text(
         context.watch<UserAuth>().userState == UserState.loggedIn
-            ? "Sign Out"
+            ? "Profile"
             : "Sign In",
       ),
     );
@@ -37,6 +37,14 @@ class _LoginState extends State<Login> {
       builder: (ctx) {
         return AlertDialog(
           actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context,
+                      UserProfileScreen.ROUTENAME +
+                          '/${context.read<UserAuth>().id}');
+                },
+                child: Text('Show Profile')),
             ElevatedButton(
               child: Text("Sign Out"),
               onPressed: () async {
