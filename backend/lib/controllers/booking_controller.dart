@@ -64,6 +64,7 @@ class BookingController extends ResourceController {
     @Bind.path('id') int id,
     @Bind.body(ignore: ["id"]) ManagedBooking _booking,
   ) async {
+    
     final bookingQuery = Query<ManagedBooking>(context)
       ..where((booking) => booking.id).equalTo(id);
 
@@ -79,7 +80,7 @@ class BookingController extends ResourceController {
           body: {'message': 'You must be a customer!'},
         );
       }
-      if (!_booking.canAddBooking()) {
+      if (!booking.canAddBooking()) {
         return Response.conflict(
           body: {'message': 'The amount of customers are full!'},
         );
@@ -93,7 +94,7 @@ class BookingController extends ResourceController {
       final relationQuery = Query<ManagedBookingCustomer>(context)
         ..values = bookingCustomerRelation;
 
-      _booking.bookedAmountOfCustomers++;
+      booking.bookedAmountOfCustomers++;
 
       await relationQuery.insert();
     } else if (request.path.segments.contains('hairdresser')) {
